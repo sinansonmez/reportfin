@@ -4,6 +4,7 @@ import {MyContext} from "../types";
 
 @Resolver()
 export class BankResolver {
+
   @Query((_returns) => [Bank])
   banks(
     @Ctx() {em}: MyContext
