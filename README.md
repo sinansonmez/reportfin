@@ -20,6 +20,7 @@ I am a self-thaught developer learning web development. This app is just a trial
 * [Apollo](https://www.apollographql.com/)
 * [MikroORM](https://mikro-orm.io/)
 * [TypeGraphQL](https://www.graphql-tools.com/)
+* [Redis](https://redis.io/)
 * [Chakra UI](https://chakra-ui.com/)
 
 ## Upcoming improvements & bug fixes
