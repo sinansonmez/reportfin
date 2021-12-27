@@ -1,4 +1,4 @@
-**DEVELOPMENT IS ONGOING FOR THIS PROJECT**
+**DEVELOPMENT IS ONGOING FOR THIS PROJECT.**
 # Report Fin
 Report Fin is a repository for quarterly and annual reports of major banks from all over the world.
 This project is created thanks to [Ben Awad's tutorial](https://github.com/benawad/lireddit)
