@@ -1,8 +1,9 @@
 import gql from 'graphql-tag';
 import * as Urql from 'urql';
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type Exact<T extends {[key: string]: unknown}> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -109,49 +110,66 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
+export type LoginMutation = {__typename?: 'Mutation', login: {__typename?: 'UserResponse', errors?: Array<{__typename?: 'FieldError', field: string, message: string}> | null | undefined, user?: {__typename?: 'User', id: number, username: string} | null | undefined}};
 
 export type RegisterMutationVariables = Exact<{
   options: UsernamePasswordInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
+export type RegisterMutation = {__typename?: 'Mutation', register: {__typename?: 'UserResponse', errors?: Array<{__typename?: 'FieldError', field: string, message: string}> | null | undefined, user?: {__typename?: 'User', id: number, username: string} | null | undefined}};
+
+export type MeQueryVariables = Exact<{[key: string]: never;}>;
+
+
+export type MeQuery = {__typename?: 'Query', me?: {__typename?: 'User', id: number, username: string} | null | undefined};
 
 
 export const LoginDocument = gql`
     mutation Login($options: UsernamePasswordInput!) {
-  login(options: $options) {
-    errors {
-      field
-      message
+        login(options: $options) {
+            errors {
+                field
+                message
+            }
+            user {
+                id
+                username
+            }
+        }
     }
-    user {
-      id
-      username
-    }
-  }
-}
-    `;
+`;
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
 export const RegisterDocument = gql`
     mutation Register($options: UsernamePasswordInput!) {
-  register(options: $options) {
-    errors {
-      field
-      message
+        register(options: $options) {
+            errors {
+                field
+                message
+            }
+            user {
+                id
+                username
+            }
+        }
     }
-    user {
-      id
-      username
-    }
-  }
-}
-    `;
+`;
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const MeDocument = gql`
+    query Me {
+        me {
+            id
+            username
+        }
+    }
+`;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MeQuery>({query: MeDocument, ...options});
 };
