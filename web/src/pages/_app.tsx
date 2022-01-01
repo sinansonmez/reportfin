@@ -2,7 +2,7 @@ import {ChakraProvider, ColorModeProvider} from '@chakra-ui/react'
 import theme from "../theme"
 import {createClient, dedupExchange, fetchExchange, Provider} from "urql";
 import {cacheExchange, Cache, QueryInput} from "@urql/exchange-graphcache";
-import {LoginMutation, MeDocument, MeQuery, RegisterMutation} from "../generated/graphql";
+import {LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation} from "../generated/graphql";
 
 function betterUpdateQuery<Result, Query>(
   cache: Cache,
@@ -23,15 +23,32 @@ const client = createClient({
     updates: {
       Mutation: {
         login: (_result, args, cache, _info) => {
-          betterUpdateQuery<LoginMutation, MeQuery>(cache, {query: MeDocument}, _result, (result, query) => {
-            return result.login.errors ? query : {me: result.login.user}
-          })
+          betterUpdateQuery<LoginMutation, MeQuery>(
+            cache,
+            {query: MeDocument},
+            _result,
+            (result, query) => {
+              return result.login.errors ? query : {me: result.login.user}
+            })
         },
         register: (_result, args, cache, _info) => {
-          betterUpdateQuery<RegisterMutation, MeQuery>(cache, {query: MeDocument}, _result, (result, query) => {
-            return result.register.errors ? query : {me: result.register.user}
-          })
-        }
+          betterUpdateQuery<RegisterMutation, MeQuery>(
+            cache,
+            {query: MeDocument},
+            _result,
+            (result, query) => {
+              return result.register.errors ? query : {me: result.register.user}
+            })
+        },
+        logout: (_result, args, cache, _info) => {
+          betterUpdateQuery<LogoutMutation, MeQuery>(
+            cache,
+            {query: MeDocument},
+            _result,
+            (_result, _query) => {
+              return {me: null}
+            })
+        },
       }
     }
   }), fetchExchange]
