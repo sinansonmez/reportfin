@@ -6,6 +6,8 @@ import {Box, Button} from "@chakra-ui/react";
 import {toErrorMap} from "../utils/toErrorMap";
 import {useRouter} from "next/router";
 import {useLoginMutation} from "../generated/graphql";
+import {withUrqlClient} from "next-urql";
+import {createUrqlClient} from "../utils/createUrqlClient";
 
 interface OwnProps {
 }
@@ -41,4 +43,4 @@ const Login: FunctionComponent<Props> = (_props) => {
   );
 };
 
-export default Login;
+export default withUrqlClient(createUrqlClient)(Login);
