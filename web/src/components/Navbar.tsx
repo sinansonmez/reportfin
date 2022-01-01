@@ -31,7 +31,7 @@ const Navbar: FunctionComponent<Props> = (_props) => {
     body = (
       <Flex>
         <Badge mr={2} colorScheme="green" display="flex" alignItems="center" >{data.me.username}</Badge>
-        <Nextlink href="/register">
+        <Nextlink href="/">
           <Button type="button" mr={2} colorScheme="blue">Logout</Button>
         </Nextlink>
       </Flex>
