@@ -126,6 +126,11 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
 
+export type BanksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BanksQuery = { __typename?: 'Query', banks: Array<{ __typename?: 'Bank', id: number, name: string, continent: string, country: string, logo: string, website: string, createdAt: string, updatedAt: string }> };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -179,6 +184,24 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const BanksDocument = gql`
+    query Banks {
+  banks {
+    id
+    name
+    continent
+    country
+    logo
+    website
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+export function useBanksQuery(options: Omit<Urql.UseQueryArgs<BanksQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<BanksQuery>({ query: BanksDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {
