@@ -1,8 +1,9 @@
 import gql from 'graphql-tag';
 import * as Urql from 'urql';
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type Exact<T extends {[key: string]: unknown}> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -37,6 +38,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createBank: Bank;
   deleteBank?: Maybe<Scalars['Boolean']>;
+  forgotPassword: Scalars['Boolean'];
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
@@ -58,8 +60,14 @@ export type MutationDeleteBankArgs = {
 };
 
 
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
+};
+
+
 export type MutationLoginArgs = {
-  options: UsernamePasswordInput;
+  password: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
 };
 
 
@@ -89,6 +97,7 @@ export type QueryBankArgs = {
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['String'];
+  email: Scalars['String'];
   id: Scalars['Float'];
   updatedAt: Scalars['String'];
   username: Scalars['String'];
@@ -101,116 +110,118 @@ export type UserResponse = {
 };
 
 export type UsernamePasswordInput = {
+  email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
 };
 
-export type RegularUserFragment = { __typename?: 'User', id: number, username: string };
+export type RegularUserFragment = {__typename?: 'User', id: number, username: string};
 
 export type LoginMutationVariables = Exact<{
-  options: UsernamePasswordInput;
+  usernameOrEmail: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
+export type LoginMutation = {__typename?: 'Mutation', login: {__typename?: 'UserResponse', errors?: Array<{__typename?: 'FieldError', field: string, message: string}> | null | undefined, user?: {__typename?: 'User', id: number, username: string} | null | undefined}};
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+export type LogoutMutationVariables = Exact<{[key: string]: never;}>;
 
 
-export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+export type LogoutMutation = {__typename?: 'Mutation', logout: boolean};
 
 export type RegisterMutationVariables = Exact<{
   options: UsernamePasswordInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
+export type RegisterMutation = {__typename?: 'Mutation', register: {__typename?: 'UserResponse', errors?: Array<{__typename?: 'FieldError', field: string, message: string}> | null | undefined, user?: {__typename?: 'User', id: number, username: string} | null | undefined}};
 
-export type BanksQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type BanksQuery = { __typename?: 'Query', banks: Array<{ __typename?: 'Bank', id: number, name: string, continent: string, country: string, logo: string, website: string, createdAt: string, updatedAt: string }> };
-
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+export type BanksQueryVariables = Exact<{[key: string]: never;}>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string } | null | undefined };
+export type BanksQuery = {__typename?: 'Query', banks: Array<{__typename?: 'Bank', id: number, name: string, continent: string, country: string, logo: string, website: string, createdAt: string, updatedAt: string}>};
+
+export type MeQueryVariables = Exact<{[key: string]: never;}>;
+
+
+export type MeQuery = {__typename?: 'Query', me?: {__typename?: 'User', id: number, username: string} | null | undefined};
 
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
-  id
-  username
-}
-    `;
+        id
+        username
+    }
+`;
 export const LoginDocument = gql`
-    mutation Login($options: UsernamePasswordInput!) {
-  login(options: $options) {
-    errors {
-      field
-      message
+    mutation Login($usernameOrEmail: String!, $password: String!) {
+        login(usernameOrEmail: $usernameOrEmail, password: $password) {
+            errors {
+                field
+                message
+            }
+            user {
+                ...RegularUser
+            }
+        }
     }
-    user {
-      ...RegularUser
-    }
-  }
-}
-    ${RegularUserFragmentDoc}`;
+${RegularUserFragmentDoc}`;
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
 export const LogoutDocument = gql`
     mutation Logout {
-  logout
-}
-    `;
+        logout
+    }
+`;
 
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
 export const RegisterDocument = gql`
     mutation Register($options: UsernamePasswordInput!) {
-  register(options: $options) {
-    errors {
-      field
-      message
+        register(options: $options) {
+            errors {
+                field
+                message
+            }
+            user {
+                ...RegularUser
+            }
+        }
     }
-    user {
-      ...RegularUser
-    }
-  }
-}
-    ${RegularUserFragmentDoc}`;
+${RegularUserFragmentDoc}`;
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
 export const BanksDocument = gql`
     query Banks {
-  banks {
-    id
-    name
-    continent
-    country
-    logo
-    website
-    createdAt
-    updatedAt
-  }
-}
-    `;
+        banks {
+            id
+            name
+            continent
+            country
+            logo
+            website
+            createdAt
+            updatedAt
+        }
+    }
+`;
 
 export function useBanksQuery(options: Omit<Urql.UseQueryArgs<BanksQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<BanksQuery>({ query: BanksDocument, ...options });
+  return Urql.useQuery<BanksQuery>({query: BanksDocument, ...options});
 };
 export const MeDocument = gql`
     query Me {
-  me {
-    ...RegularUser
-  }
-}
-    ${RegularUserFragmentDoc}`;
+        me {
+            ...RegularUser
+        }
+    }
+${RegularUserFragmentDoc}`;
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+  return Urql.useQuery<MeQuery>({query: MeDocument, ...options});
 };

@@ -20,9 +20,9 @@ const Login: FunctionComponent<Props> = (_props) => {
   return (
     <Wrapper variant="small">
       <Formik
-        initialValues={{username: "", password: ""}}
+        initialValues={{usernameOrEmail: "", password: ""}}
         onSubmit={async (values, {setErrors}) => {
-          const response = await login({options: values})
+          const response = await login(values)
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors))
           } else if (response.data?.login.user) {
@@ -31,7 +31,7 @@ const Login: FunctionComponent<Props> = (_props) => {
         }}>
         {({isSubmitting}) => (
           <Form>
-            <InputField label="Username" name="username" placeholder="Username"/>
+            <InputField label="Username or Email" name="usernameOrEmail" placeholder="Username or Email"/>
             <Box mt={4}>
               <InputField label="Password" name="password" placeholder="Password" type="password"/>
             </Box>
