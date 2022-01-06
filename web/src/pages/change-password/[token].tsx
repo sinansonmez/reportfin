@@ -15,6 +15,8 @@ interface OwnProps {
   token: string;
 }
 
+console.log("change password page is called")
+
 type Props = OwnProps;
 
 const ChangePassword: NextPage<Props> = (props) => {
@@ -43,14 +45,16 @@ const ChangePassword: NextPage<Props> = (props) => {
             <Flex>
               <Box color="tomato">{tokenError}</Box>
               <NextLink href={`/forgot-password`}>
-                <Button ml={2} colorScheme="blue">Get a new token</Button>
+                <Button
+                  ml={2}
+                  size="sm"
+                  variant="link"
+                  colorScheme="blue">Get a new token</Button>
               </NextLink>
             </Flex>}
             <Button
               type="submit"
               mt={4}
-              size="sm"
-              variant="link"
               colorScheme="blue"
               isLoading={isSubmitting}>
               Change Password
