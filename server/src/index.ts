@@ -13,10 +13,8 @@ import connectRedis from "connect-redis";
 import {__prod__, COOKIE_NAME} from "./constants";
 import {MyContext} from "./types";
 import cors from "cors";
-import {sendEmail} from "./utils/sendEmail";
 
 const main = async () => {
-  sendEmail("sinansonmez@outlook.com", "test e-mail")
   const orm = await MikroORM.init(mikroConfig)
   await orm.getMigrator().up();
 
@@ -54,7 +52,7 @@ const main = async () => {
       resolvers: [HelloResolver, BankResolver, UserResolver],
       validate: false
     }),
-    context: ({req, res}): MyContext => ({em: orm.em, req, res})
+    context: ({req, res}): MyContext => ({em: orm.em, req, res, redis})
   })
   await apolloServer.start()
   apolloServer.applyMiddleware({app, cors: false});
