@@ -1,23 +1,17 @@
-import {Arg, Ctx, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Mutation, Query, Resolver} from "type-graphql";
 import {Bank} from "../entities/Bank";
-import {MyContext} from "../types";
 
 @Resolver()
 export class BankResolver {
 
   @Query((_returns) => [Bank])
-  banks(
-    @Ctx() {em}: MyContext
-  ): Promise<Bank[]> {
-    return em.find(Bank, {});
+  banks(): Promise<Bank[]> {
+    return Bank.find()
   }
 
   @Query((_returns) => Bank, {nullable: true})
-  bank(
-    @Arg("id") id: number,
-    @Ctx() {em}: MyContext
-  ): Promise<Bank | null> {
-    return em.findOne(Bank, {id});
+  bank(@Arg("id") id: number): Promise<Bank | undefined> {
+    return Bank.findOne(id)
   }
 
   @Mutation((_returns) => Bank)
@@ -27,37 +21,32 @@ export class BankResolver {
     @Arg("logo") logo: string,
     @Arg("country") country: string,
     @Arg("website") website: string,
-    @Ctx() {em}: MyContext
   ): Promise<Bank> {
-    const bank = em.create(Bank, {name, continent, logo, country, website});
-    await em.persistAndFlush(bank);
+    const bank = Bank.create({name, continent, logo, country, website})
+    await bank.save()
     return bank;
   }
 
+  // think about what other fields we want to update in the future, maybe website?
   @Mutation((_returns) => Bank, {nullable: true})
   async updateBank(
     @Arg("id") id: number,
     @Arg("logo") logo: string,
-    @Ctx() {em}: MyContext
   ): Promise<Bank | null> {
-    const bank = await em.findOne(Bank, {id});
+    const bank = await Bank.findOne(id)
     if (!bank) throw new Error("Bank not found");
     if (typeof logo !== "undefined") {
-      bank.logo = logo
-      await em.persistAndFlush(bank);
+      await Bank.update({id}, {logo}) // update logo
     }
     return bank;
   }
 
   @Mutation((_returns) => Boolean, {nullable: true})
-  async deleteBank(
-    @Arg("id") id: number,
-    @Ctx() {em}: MyContext
-  ): Promise<boolean> {
-    const bank = await em.findOne(Bank, {id});
+  async deleteBank(@Arg("id") id: number,): Promise<boolean> {
+    const bank = await Bank.findOne(id)
     if (!bank) return false
 
-    await em.removeAndFlush(bank);
+    await Bank.delete(id);
     return true
   }
 
