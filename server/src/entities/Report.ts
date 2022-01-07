@@ -4,41 +4,41 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
-import {Report} from "./Report";
+import {Bank} from "./Bank";
 
 @ObjectType()
 @Entity()
-export class Bank extends BaseEntity {
+export class Report extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
   @Column()
-  name: string;
+  year: string;
 
   @Field()
   @Column()
-  continent: string;
+  quarter: string;
 
   @Field()
   @Column()
-  logo: string;
+  link: string;
+
+  @Field()
+  @Column({type: "int", default: 0})
+  downloadCount: number;
 
   @Field()
   @Column()
-  country: string;
+  bankId: number;
 
-  @Field()
-  @Column()
-  website: string;
-
-  @OneToMany(() => Report, report => report.bank)
-  reports: Report[];
+  @ManyToOne(() => Bank, bank => bank.reports)
+  bank: Bank;
 
   @Field((_return) => String)
   @CreateDateColumn()

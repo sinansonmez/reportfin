@@ -14,6 +14,7 @@ import cors from "cors";
 import {createConnection} from "typeorm"
 import {Bank} from "./entities/Bank";
 import {User} from "./entities/User";
+import {Report} from "./entities/Report";
 
 const main = async () => {
   createConnection({
@@ -23,7 +24,7 @@ const main = async () => {
     password: "postgres",
     logging: true,
     synchronize: true,
-    entities: [Bank, User]
+    entities: [Bank, User, Report]
   })
 
   const app = express();
