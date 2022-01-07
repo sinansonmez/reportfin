@@ -1,5 +1,6 @@
-import {Arg, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Ctx, Mutation, Query, Resolver} from "type-graphql";
 import {Bank} from "../entities/Bank";
+import {MyContext} from "../types";
 
 @Resolver()
 export class BankResolver {
@@ -21,7 +22,10 @@ export class BankResolver {
     @Arg("logo") logo: string,
     @Arg("country") country: string,
     @Arg("website") website: string,
+    @Ctx() {req}: MyContext
   ): Promise<Bank> {
+    if (!req.session.userId) throw new Error("not authenticated")
+
     const bank = Bank.create({name, continent, logo, country, website})
     await bank.save()
     return bank;
@@ -32,7 +36,9 @@ export class BankResolver {
   async updateBank(
     @Arg("id") id: number,
     @Arg("logo") logo: string,
+    @Ctx() {req}: MyContext
   ): Promise<Bank | null> {
+    if (!req.session.userId) throw new Error("not authenticated")
     const bank = await Bank.findOne(id)
     if (!bank) throw new Error("Bank not found");
     if (typeof logo !== "undefined") {
@@ -42,7 +48,11 @@ export class BankResolver {
   }
 
   @Mutation((_returns) => Boolean, {nullable: true})
-  async deleteBank(@Arg("id") id: number,): Promise<boolean> {
+  async deleteBank(
+    @Arg("id") id: number,
+    @Ctx() {req}: MyContext
+  ): Promise<boolean> {
+    if (!req.session.userId) throw new Error("not authenticated")
     const bank = await Bank.findOne(id)
     if (!bank) return false
 

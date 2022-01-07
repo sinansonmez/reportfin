@@ -1,6 +1,7 @@
-import {Arg, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Ctx, Mutation, Query, Resolver} from "type-graphql";
 import {Report} from "../entities/Report";
 import {Bank} from "../entities/Bank";
+import {MyContext} from "../types";
 
 @Resolver()
 export class ReportResolver {
@@ -11,17 +12,19 @@ export class ReportResolver {
   }
 
   @Query((_returns) => Report, {nullable: true})
-  bank(@Arg("id") id: number): Promise<Report | undefined> {
+  report(@Arg("id") id: number): Promise<Report | undefined> {
     return Report.findOne(id)
   }
 
   @Mutation((_returns) => Report)
-  async createBank(
+  async createReport(
     @Arg("year") year: string,
     @Arg("quarter") quarter: string,
     @Arg("link") link: string,
     @Arg("bank") bank: Bank,
+    @Ctx() {req}: MyContext
   ): Promise<Report> {
+    if (!req.session.userId) throw new Error("not authenticated")
     const report = Report.create({year, quarter, link, bank, bankId: bank.id})
     await report.save()
     return report;
@@ -29,10 +32,12 @@ export class ReportResolver {
 
   // think about what other fields we want to update in the future, maybe website?
   @Mutation((_returns) => Report, {nullable: true})
-  async updateBank(
+  async updateReport(
     @Arg("id") id: number,
     @Arg("link") link: string,
+    @Ctx() {req}: MyContext
   ): Promise<Report> {
+    if (!req.session.userId) throw new Error("not authenticated")
     const report = await Report.findOne(id)
     if (!report) throw new Error("Bank not found");
     if (typeof link !== "undefined") {
@@ -42,7 +47,11 @@ export class ReportResolver {
   }
 
   @Mutation((_returns) => Boolean, {nullable: true})
-  async deleteBank(@Arg("id") id: number,): Promise<boolean> {
+  async deleteReport(
+    @Arg("id") id: number,
+    @Ctx() {req}: MyContext
+  ): Promise<boolean> {
+    if (!req.session.userId) throw new Error("not authenticated")
     const report = await Report.findOne(id)
     if (!report) return false
 
