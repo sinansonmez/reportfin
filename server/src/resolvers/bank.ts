@@ -1,6 +1,6 @@
-import {Arg, Ctx, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Mutation, Query, Resolver, UseMiddleware} from "type-graphql";
 import {Bank} from "../entities/Bank";
-import {MyContext} from "../types";
+import {isAuth} from "../middleware/isAuth";
 
 @Resolver()
 export class BankResolver {
@@ -16,16 +16,14 @@ export class BankResolver {
   }
 
   @Mutation((_returns) => Bank)
+  @UseMiddleware(isAuth)
   async createBank(
     @Arg("name") name: string,
     @Arg("continent") continent: string,
     @Arg("logo") logo: string,
     @Arg("country") country: string,
     @Arg("website") website: string,
-    @Ctx() {req}: MyContext
   ): Promise<Bank> {
-    if (!req.session.userId) throw new Error("not authenticated")
-
     const bank = Bank.create({name, continent, logo, country, website})
     await bank.save()
     return bank;
@@ -33,12 +31,11 @@ export class BankResolver {
 
   // think about what other fields we want to update in the future, maybe website?
   @Mutation((_returns) => Bank, {nullable: true})
+  @UseMiddleware(isAuth)
   async updateBank(
     @Arg("id") id: number,
     @Arg("logo") logo: string,
-    @Ctx() {req}: MyContext
   ): Promise<Bank | null> {
-    if (!req.session.userId) throw new Error("not authenticated")
     const bank = await Bank.findOne(id)
     if (!bank) throw new Error("Bank not found");
     if (typeof logo !== "undefined") {
@@ -48,11 +45,10 @@ export class BankResolver {
   }
 
   @Mutation((_returns) => Boolean, {nullable: true})
+  @UseMiddleware(isAuth)
   async deleteBank(
-    @Arg("id") id: number,
-    @Ctx() {req}: MyContext
+    @Arg("id") id: number
   ): Promise<boolean> {
-    if (!req.session.userId) throw new Error("not authenticated")
     const bank = await Bank.findOne(id)
     if (!bank) return false
 
