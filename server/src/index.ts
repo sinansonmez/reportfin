@@ -13,8 +13,20 @@ import connectRedis from "connect-redis";
 import {__prod__, COOKIE_NAME} from "./constants";
 import {MyContext} from "./types";
 import cors from "cors";
+import {createConnection} from "typeorm"
+import {Bank} from "./entities/Bank";
+import {User} from "./entities/User";
 
 const main = async () => {
+  const conn = createConnection({
+    type: "postgres",
+    database: "reportfin2",
+    username: "postgres",
+    password: "postgres",
+    logging: true,
+    synchronize: true,
+    entities: [Bank, User]
+  })
   const orm = await MikroORM.init(mikroConfig)
   await orm.getMigrator().up();
 
@@ -52,7 +64,7 @@ const main = async () => {
       resolvers: [HelloResolver, BankResolver, UserResolver],
       validate: false
     }),
-    context: ({req, res}): MyContext => ({em: orm.em, req, res, redis})
+    context: ({req, res}): MyContext => ({ req, res, redis})
   })
   await apolloServer.start()
   apolloServer.applyMiddleware({app, cors: false});

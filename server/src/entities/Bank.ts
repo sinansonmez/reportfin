@@ -1,38 +1,38 @@
-import {Entity, PrimaryKey, Property} from "@mikro-orm/core";
 import {Field, ObjectType} from "type-graphql";
+import {BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 
 @ObjectType()
 @Entity()
-export class Bank {
+export class Bank extends BaseEntity {
   @Field()
-  @PrimaryKey()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
-  @Property()
+  @Column()
   name: string;
 
   @Field()
-  @Property()
+  @Column()
   continent: string;
 
   @Field()
-  @Property()
+  @Column()
   logo: string;
 
   @Field((_return) => String)
-  @Property()
-  createdAt: Date = new Date();
+  @CreateDateColumn()
+  createdAt: Date
 
   @Field((_return) => String)
-  @Property({onUpdate: () => new Date()})
-  updatedAt: Date = new Date();
+  @UpdateDateColumn()
+  updatedAt: Date
 
   @Field()
-  @Property()
+  @Column()
   country: string;
 
   @Field()
-  @Property()
+  @Column()
   website: string;
 }
