@@ -146,7 +146,7 @@ export class UserResolver {
     @Ctx() {req}: MyContext
   ): Promise<UserResponse> {
     const queryParam = usernameOrEmail.includes("@") ? {email: usernameOrEmail} : {username: usernameOrEmail}
-    const user = await User.findOne({where: {queryParam}})
+    const user = await User.findOne({where: queryParam})
     if (!user) {
       return {
         errors: [{
