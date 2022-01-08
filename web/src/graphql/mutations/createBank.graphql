@@ -1,0 +1,5 @@
+mutation CreateBank($options: CreateBankInput!) {
+    createBank(options: $options) {
+        ...RegularBankResponse
+    }
+}

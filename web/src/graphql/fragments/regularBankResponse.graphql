@@ -1,0 +1,10 @@
+fragment RegularBankResponse on Bank {
+    id
+    name
+    continent
+    country
+    logo
+    website
+    createdAt
+    updatedAt
+}

@@ -22,9 +22,12 @@ export class ReportResolver {
     @Arg("year") year: string,
     @Arg("quarter") quarter: string,
     @Arg("link") link: string,
-    @Arg("bank") bank: Bank,
+    @Arg("bank") bank: string,
   ): Promise<Report> {
-    const report = Report.create({year, quarter, link, bank, bankId: bank.id})
+    const bankRecord = await Bank.findOne({where: {name: bank}})
+    if (!bankRecord) throw new Error("Bank not found")
+
+    const report = Report.create({year, quarter, link, bank: bankRecord, bankId: bankRecord.id})
     await report.save()
     return report;
   }

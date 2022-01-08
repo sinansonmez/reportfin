@@ -1,4 +1,4 @@
-import {UsernamePasswordInput} from "../resolvers/UsernamePasswordInput";
+import {UsernamePasswordInput} from "../resolvers/inputs/UsernamePasswordInput";
 
 // TODO: include better validation for email
 export const validateRegister = (options: UsernamePasswordInput) => {

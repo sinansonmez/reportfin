@@ -1,6 +1,7 @@
 import {Arg, Mutation, Query, Resolver, UseMiddleware} from "type-graphql";
 import {Bank} from "../entities/Bank";
 import {isAuth} from "../middleware/isAuth";
+import {CreateBankInput} from "./inputs/CreateBankInput";
 
 @Resolver()
 export class BankResolver {
@@ -18,13 +19,15 @@ export class BankResolver {
   @Mutation((_returns) => Bank)
   @UseMiddleware(isAuth)
   async createBank(
-    @Arg("name") name: string,
-    @Arg("continent") continent: string,
-    @Arg("logo") logo: string,
-    @Arg("country") country: string,
-    @Arg("website") website: string,
+    @Arg("options") options: CreateBankInput,
   ): Promise<Bank> {
-    const bank = Bank.create({name, continent, logo, country, website})
+    const bank = Bank.create({
+      name: options.name,
+      continent: options.continent,
+      country: options.country,
+      logo: options.logo,
+      website: options.website
+    })
     await bank.save()
     return bank;
   }

@@ -2,7 +2,6 @@ import "reflect-metadata";
 import express from "express";
 import {ApolloServer} from "apollo-server-express";
 import {buildSchema} from "type-graphql";
-import {HelloResolver} from "./resolvers/hello";
 import {BankResolver} from "./resolvers/bank";
 import {UserResolver} from "./resolvers/user";
 import Redis from "ioredis";
@@ -15,6 +14,7 @@ import {createConnection} from "typeorm"
 import {Bank} from "./entities/Bank";
 import {User} from "./entities/User";
 import {Report} from "./entities/Report";
+import {ReportResolver} from "./resolvers/report";
 
 const main = async () => {
   createConnection({
@@ -58,7 +58,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, BankResolver, UserResolver],
+      resolvers: [BankResolver, UserResolver, ReportResolver],
       validate: false
     }),
     context: ({req, res}): MyContext => ({ req, res, redis})
