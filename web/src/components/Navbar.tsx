@@ -47,7 +47,7 @@ const Navbar: FunctionComponent<Props> = (_props) => {
   }
 
   return (
-    <Flex bgColor="blue.900" p={4} ml="auto">
+    <Flex zIndex={1} position="sticky" top={0} bgColor="blue.900" p={4} ml="auto">
       <Box ml="auto">
         {body}
       </Box>

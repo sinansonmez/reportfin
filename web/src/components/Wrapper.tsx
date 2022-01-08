@@ -1,8 +1,10 @@
 import React, {FunctionComponent} from 'react';
 import {Box} from "@chakra-ui/react";
 
+export type WrapperVariant = 'regular' | 'small';
+
 interface OwnProps {
-  variant?: string // question mark means optional
+  variant?: WrapperVariant // question mark means optional
 }
 
 type Props = OwnProps;

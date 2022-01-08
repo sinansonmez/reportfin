@@ -4,10 +4,10 @@ import {createUrqlClient} from "../utils/createUrqlClient";
 import {Form, Formik} from "formik";
 import InputField from "../components/InputField";
 import {Box, Button} from "@chakra-ui/react";
-import Wrapper from "../components/Wrapper";
 import {useRouter} from "next/router";
 import {useCreateBankMutation} from "../generated/graphql";
 import RadioField from "../components/RadioField";
+import Layout from "../components/Layout";
 
 interface OwnProps {
 }
@@ -19,7 +19,7 @@ const CreateBank: FunctionComponent<Props> = (props) => {
   const [, createBank] = useCreateBankMutation()
   const continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America"]
   return (
-    <Wrapper variant="small">
+    <Layout>
       <Formik
         initialValues={{name: "", continent: "", country: "", logo: "", website: ""}}
         onSubmit={async (values) => {
@@ -47,7 +47,7 @@ const CreateBank: FunctionComponent<Props> = (props) => {
           </Form>
         )}
       </Formik>
-    </Wrapper>
+    </Layout>
   );
 };
 
