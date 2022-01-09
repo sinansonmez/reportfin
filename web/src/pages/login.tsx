@@ -27,7 +27,7 @@ const Login: FunctionComponent<Props> = (_props) => {
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors))
           } else if (response.data?.login.user) {
-            await router.push("/")
+            typeof router.query.next === "string" ? await router.push(router.query.next) : await router.push("/")
           }
         }}>
         {({isSubmitting}) => (
@@ -36,7 +36,7 @@ const Login: FunctionComponent<Props> = (_props) => {
             <Box mt={4}>
               <InputField label="Password" name="password" placeholder="Password" type="password"/>
             </Box>
-            <Flex justifyContent="space-between" >
+            <Flex justifyContent="space-between">
               <Button type="submit" mt={4} colorScheme="blue" isLoading={isSubmitting}>Login</Button>
               <Nextlink href={`/forgot-password`}>
                 <Button mt={4} ml={2} size="sm" variant="link" colorScheme="blue">Forgot Password</Button>

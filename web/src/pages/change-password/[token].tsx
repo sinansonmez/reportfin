@@ -29,7 +29,10 @@ const ChangePassword: NextPage<Props> = (props) => {
       <Formik
         initialValues={{newPassword: ""}}
         onSubmit={async (values, {setErrors}) => {
-          const response = await changePassword({token: props.token, newPassword: values.newPassword})
+          const response = await changePassword({
+            token: typeof router.query.token === "string" ? router.query.token : "",
+            newPassword: values.newPassword
+          })
           if (response.data?.changePassword.errors) {
             const errorMap = toErrorMap(response.data.changePassword.errors)
             if ("token" in errorMap) setTokenError(errorMap.token)
@@ -61,11 +64,5 @@ const ChangePassword: NextPage<Props> = (props) => {
     </Wrapper>
   );
 };
-
-ChangePassword.getInitialProps = (query) => {
-  return {
-    token: query.query.token as string
-  }
-}
 
 export default withUrqlClient(createUrqlClient)(ChangePassword);

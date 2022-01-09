@@ -11,9 +11,7 @@ type Props = OwnProps;
 const Navbar: FunctionComponent<Props> = (_props) => {
   const [{fetching: logoutFetching}, logout] = useLogoutMutation()
   const [{data, fetching}] = useMeQuery()
-  let body = null;
-
-  console.log(logout)
+  let body;
 
   if (fetching) {
     body = null;
