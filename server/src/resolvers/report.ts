@@ -3,6 +3,7 @@ import {Report} from "../entities/Report";
 import {Bank} from "../entities/Bank";
 import {isAuth} from "../middleware/isAuth";
 import {getConnection} from "typeorm";
+import {CreateReportInput} from "./inputs/CreateReportInput";
 
 @Resolver()
 export class ReportResolver {
@@ -32,15 +33,18 @@ export class ReportResolver {
   @Mutation((_returns) => Report)
   @UseMiddleware(isAuth)
   async createReport(
-    @Arg("year") year: string,
-    @Arg("quarter") quarter: string,
-    @Arg("link") link: string,
-    @Arg("bank") bank: string,
+    @Arg("options") options: CreateReportInput,
   ): Promise<Report> {
-    const bankRecord = await Bank.findOne({where: {name: bank}})
+    const bankRecord = await Bank.findOne({where: {name: options.bank}})
     if (!bankRecord) throw new Error("Bank not found")
 
-    const report = Report.create({year, quarter, link, bank: bankRecord, bankId: bankRecord.id})
+    const report = Report.create({
+      year: options.year,
+      quarter: options.quarter,
+      link: options.link,
+      bank: bankRecord,
+      bankId: bankRecord.id
+    })
     await report.save()
     return report;
   }

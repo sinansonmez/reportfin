@@ -35,6 +35,13 @@ export type CreateBankInput = {
   website: Scalars['String'];
 };
 
+export type CreateReportInput = {
+  bank: Scalars['String'];
+  link: Scalars['String'];
+  quarter: Scalars['String'];
+  year: Scalars['String'];
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
@@ -69,10 +76,7 @@ export type MutationCreateBankArgs = {
 
 
 export type MutationCreateReportArgs = {
-  bank: Scalars['String'];
-  link: Scalars['String'];
-  quarter: Scalars['String'];
-  year: Scalars['String'];
+  options: CreateReportInput;
 };
 
 
@@ -175,6 +179,8 @@ export type RegularBankResponseFragment = { __typename?: 'Bank', id: number, nam
 
 export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
+export type RegularReportResponseFragment = { __typename?: 'Report', id: number, year: string, quarter: string, link: string, downloadCount: number, bankId: number, createdAt: string, updatedAt: string };
+
 export type RegularUserFragment = { __typename?: 'User', id: number, username: string };
 
 export type RegularUserResponseFragment = { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined };
@@ -193,6 +199,13 @@ export type CreateBankMutationVariables = Exact<{
 
 
 export type CreateBankMutation = { __typename?: 'Mutation', createBank: { __typename?: 'Bank', id: number, name: string, continent: string, country: string, logo: string, website: string, createdAt: string, updatedAt: string } };
+
+export type CreateReportMutationVariables = Exact<{
+  options: CreateReportInput;
+}>;
+
+
+export type CreateReportMutation = { __typename?: 'Mutation', createReport: { __typename?: 'Report', id: number, year: string, quarter: string, link: string, downloadCount: number, bankId: number, createdAt: string, updatedAt: string } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -251,6 +264,18 @@ export const RegularBankResponseFragmentDoc = gql`
   updatedAt
 }
     `;
+export const RegularReportResponseFragmentDoc = gql`
+    fragment RegularReportResponse on Report {
+  id
+  year
+  quarter
+  link
+  downloadCount
+  bankId
+  createdAt
+  updatedAt
+}
+    `;
 export const RegularErrorFragmentDoc = gql`
     fragment RegularError on FieldError {
   field
@@ -295,6 +320,17 @@ export const CreateBankDocument = gql`
 
 export function useCreateBankMutation() {
   return Urql.useMutation<CreateBankMutation, CreateBankMutationVariables>(CreateBankDocument);
+};
+export const CreateReportDocument = gql`
+    mutation CreateReport($options: CreateReportInput!) {
+  createReport(options: $options) {
+    ...RegularReportResponse
+  }
+}
+    ${RegularReportResponseFragmentDoc}`;
+
+export function useCreateReportMutation() {
+  return Urql.useMutation<CreateReportMutation, CreateReportMutationVariables>(CreateReportDocument);
 };
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {

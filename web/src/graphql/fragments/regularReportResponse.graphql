@@ -1,0 +1,10 @@
+fragment RegularReportResponse on Report {
+    id
+    year
+    quarter
+    link
+    downloadCount
+    bankId
+    createdAt
+    updatedAt
+}

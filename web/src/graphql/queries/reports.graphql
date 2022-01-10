@@ -1,0 +1,12 @@
+query Reports($limit: Int!, $cursor: String) {
+    reports(limit: $limit, cursor: $cursor) {
+        id
+        year
+        quarter
+        link
+        downloadCount
+        bankId
+        createdAt
+        updatedAt
+    }
+}
