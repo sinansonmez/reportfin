@@ -3,7 +3,7 @@ import {withUrqlClient} from "next-urql";
 import {createUrqlClient} from "../utils/createUrqlClient";
 import {Form, Formik} from "formik";
 import InputField from "../components/InputField";
-import {Box, Button} from "@chakra-ui/react";
+import {Alert, AlertIcon, Box, Button} from "@chakra-ui/react";
 import {useRouter} from "next/router";
 import {useCreateBankMutation} from "../generated/graphql";
 import RadioField from "../components/RadioField";
@@ -19,6 +19,7 @@ const CreateBank: FunctionComponent<Props> = (props) => {
     useIsAuth()
     const router = useRouter()
     const [, createBank] = useCreateBankMutation()
+    const [error, setError] = React.useState("")
     const continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America"]
     return (
       <Layout>
@@ -26,7 +27,13 @@ const CreateBank: FunctionComponent<Props> = (props) => {
           initialValues={{name: "", continent: "", country: "", logo: "", website: ""}}
           onSubmit={async (values) => {
             const response = await createBank({options: values})
-            if (!response.error) await router.push("/")
+            console.log("response error: ", response.error)
+            if (response.error) {
+              setError(response.error.message)
+            } else {
+              await router.push("/")
+            }
+            console.log("error state: ", error)
           }}>
           {({isSubmitting}) => (
             <Form>
@@ -47,6 +54,7 @@ const CreateBank: FunctionComponent<Props> = (props) => {
             </Form>
           )}
         </Formik>
+        {error && <Alert mt={2} status='error'><AlertIcon/>{error}</Alert>}
       </Layout>
     );
   }

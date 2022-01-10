@@ -3,7 +3,7 @@ import {withUrqlClient} from "next-urql";
 import {createUrqlClient} from "../utils/createUrqlClient";
 import {Form, Formik} from "formik";
 import InputField from "../components/InputField";
-import {Box, Button} from "@chakra-ui/react";
+import {Alert, AlertIcon, Box, Button} from "@chakra-ui/react";
 import {useRouter} from "next/router";
 import RadioField from "../components/RadioField";
 import Layout from "../components/Layout";
@@ -19,6 +19,7 @@ const CreateReport: FunctionComponent<Props> = (props) => {
     useIsAuth()
     const router = useRouter()
     const [, createReport] = useCreateReportMutation()
+    const [error, setError] = React.useState("")
     const quarters = ["1Q", "2Q", "3Q", "4Q"]
     return (
       <Layout>
@@ -26,8 +27,13 @@ const CreateReport: FunctionComponent<Props> = (props) => {
           initialValues={{bank: "", link: "", quarter: "", year: ""}}
           onSubmit={async (values) => {
             const response = await createReport({options: values})
-            console.log(response)
-            if (!response.error) await router.push("/")
+            console.log("response error: ", response.error)
+            if (response.error) {
+              setError(response.error.message)
+            } else {
+              await router.push("/")
+            }
+            console.log("error state: ", error)
           }}>
           {({isSubmitting}) => (
             <Form>
@@ -45,6 +51,7 @@ const CreateReport: FunctionComponent<Props> = (props) => {
             </Form>
           )}
         </Formik>
+        {error && <Alert mt={2} status='error'><AlertIcon/>{error}</Alert>}
       </Layout>
     );
   }
