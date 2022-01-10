@@ -1,14 +1,27 @@
-import {Arg, Mutation, Query, Resolver, UseMiddleware} from "type-graphql";
+import {Arg, Int, Mutation, Query, Resolver, UseMiddleware} from "type-graphql";
 import {Report} from "../entities/Report";
 import {Bank} from "../entities/Bank";
 import {isAuth} from "../middleware/isAuth";
+import {getConnection} from "typeorm";
 
 @Resolver()
 export class ReportResolver {
 
   @Query((_returns) => [Report])
-  reports(): Promise<Report[]> {
-    return Report.find()
+  reports(
+    @Arg("limit", _returns => Int) limit: number,
+    @Arg("cursor", _returns => String, {nullable: true}) cursor: string | null,
+  ): Promise<Report[]> {
+    const realLimit = Math.min(50, limit);
+    const qb = getConnection()
+      .getRepository(Report)
+      .createQueryBuilder("report")
+      .orderBy('"createdAt"', "DESC")
+      .take(realLimit)
+
+    if (cursor) qb.where('"createdAt" < :cursor', {cursor: new Date(parseInt(cursor))});
+
+    return qb.getMany();
   }
 
   @Query((_returns) => Report, {nullable: true})

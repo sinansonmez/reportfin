@@ -15,8 +15,6 @@ interface OwnProps {
   token: string;
 }
 
-console.log("change password page is called")
-
 type Props = OwnProps;
 
 const ChangePassword: NextPage<Props> = (props) => {

@@ -132,6 +132,12 @@ export type QueryReportArgs = {
   id: Scalars['Float'];
 };
 
+
+export type QueryReportsArgs = {
+  cursor?: InputMaybe<Scalars['String']>;
+  limit: Scalars['Int'];
+};
+
 export type Report = {
   __typename?: 'Report';
   bankId: Scalars['Float'];
@@ -224,6 +230,14 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string } | null | undefined };
+
+export type ReportsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type ReportsQuery = { __typename?: 'Query', reports: Array<{ __typename?: 'Report', id: number, year: string, quarter: string, link: string, downloadCount: number, bankId: number, createdAt: string, updatedAt: string }> };
 
 export const RegularBankResponseFragmentDoc = gql`
     fragment RegularBankResponse on Bank {
@@ -350,4 +364,22 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const ReportsDocument = gql`
+    query Reports($limit: Int!, $cursor: String) {
+  reports(limit: $limit, cursor: $cursor) {
+    id
+    year
+    quarter
+    link
+    downloadCount
+    bankId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+export function useReportsQuery(options: Omit<Urql.UseQueryArgs<ReportsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ReportsQuery>({ query: ReportsDocument, ...options });
 };
