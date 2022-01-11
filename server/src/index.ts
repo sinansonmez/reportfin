@@ -15,17 +15,21 @@ import {Bank} from "./entities/Bank";
 import {User} from "./entities/User";
 import {Report} from "./entities/Report";
 import {ReportResolver} from "./resolvers/report";
+import path from "path";
 
 const main = async () => {
-  createConnection({
+  const conn = await createConnection({
     type: "postgres",
     database: "reportfin2",
     username: "postgres",
     password: "postgres",
     logging: true,
     synchronize: true,
+    migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Bank, User, Report]
   })
+
+  await conn.runMigrations()
 
   const app = express();
 
@@ -61,7 +65,7 @@ const main = async () => {
       resolvers: [BankResolver, UserResolver, ReportResolver],
       validate: false
     }),
-    context: ({req, res}): MyContext => ({ req, res, redis})
+    context: ({req, res}): MyContext => ({req, res, redis})
   })
   await apolloServer.start()
   apolloServer.applyMiddleware({app, cors: false});

@@ -1,4 +1,4 @@
-import {Box, Button, Flex, Text} from "@chakra-ui/react";
+import {Button, Flex, Text} from "@chakra-ui/react";
 import {withUrqlClient} from "next-urql";
 import {createUrqlClient} from "../utils/createUrqlClient";
 import Layout from "../components/Layout";
@@ -20,7 +20,7 @@ const Index = () => {
       {!data?.reports ? (
         <div>Loading...</div>
       ) : (
-        data.reports.map(report => (
+        data.reports.map(report =>
           <Flex key={report.id}>
             <Text>{report.bankId}</Text>
             <Text ml={2}>{report.link}</Text>
@@ -29,7 +29,7 @@ const Index = () => {
             <Text ml={2}>{report.year}</Text>
           </Flex>
         ))
-      )}
+      }
     </Layout>
   )
 }
