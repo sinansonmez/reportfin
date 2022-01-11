@@ -27,13 +27,11 @@ const CreateReport: FunctionComponent<Props> = (props) => {
           initialValues={{bank: "", link: "", quarter: "", year: ""}}
           onSubmit={async (values) => {
             const response = await createReport({options: values})
-            console.log("response error: ", response.error)
             if (response.error) {
               setError(response.error.message)
             } else {
               await router.push("/")
             }
-            console.log("error state: ", error)
           }}>
           {({isSubmitting}) => (
             <Form>
