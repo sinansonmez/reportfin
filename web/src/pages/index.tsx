@@ -9,13 +9,12 @@ import React from "react";
 //TODO: create and admin page with create bank, edit bank, delete bank, create report, edit report, delete report
 // TODO: why when I logged in, it doesn't show that I'm logged in?
 const Index = () => {
-  const [{data, fetching}] = useReportsQuery({
-      variables: {limit: 10}
-    }
-  );
+  const [variables, setVariables] = React.useState({limit: 10, cursor: null as null | string});
+  const [{data, fetching}] = useReportsQuery({variables});
 
   if (!fetching && !data) {
-    return <Alert mt={2} status='error'><AlertIcon/>Oops, something went wrong. Send me an email: sinansonmez@outlook.com. Please try again later</Alert>
+    return <Alert mt={2} status='error'><AlertIcon/>Oops, something went wrong. Send me an email:
+      sinansonmez@outlook.com. Please try again later</Alert>
   }
 
 
@@ -31,6 +30,7 @@ const Index = () => {
         borderRadius="4px"
         key={report.id}>
         <Text flexGrow="2">{report.bankId}</Text>
+        {/*TODO: show continent and country of the bank*/}
         <Flex flexGrow="1" ml={2} alignItems="center">
           <Text>{report.quarter}</Text>
           <Text>-</Text>
@@ -57,7 +57,13 @@ const Index = () => {
       }
       {data &&
       <Flex p={8} justifyContent="center">
-        <Button isLoading={fetching} colorScheme="blue">Load More</Button>
+        <Button
+          isLoading={fetching} colorScheme="blue" onClick={() => {
+            setVariables({
+              limit: variables.limit,
+              cursor: data.reports[data.reports.length - 1].createdAt
+            })
+        }}>Load More</Button>
       </Flex>}
     </Layout>
   )
