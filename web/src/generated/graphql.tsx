@@ -117,13 +117,19 @@ export type MutationUpdateReportArgs = {
   link: Scalars['String'];
 };
 
+export type PaginatedReports = {
+  __typename?: 'PaginatedReports';
+  hasMore: Scalars['Boolean'];
+  reports: Array<Report>;
+};
+
 export type Query = {
   __typename?: 'Query';
   bank?: Maybe<Bank>;
   banks: Array<Bank>;
   me?: Maybe<User>;
   report?: Maybe<Report>;
-  reports: Array<Report>;
+  reports: PaginatedReports;
 };
 
 
@@ -250,7 +256,7 @@ export type ReportsQueryVariables = Exact<{
 }>;
 
 
-export type ReportsQuery = { __typename?: 'Query', reports: Array<{ __typename?: 'Report', id: number, year: string, quarter: string, link: string, downloadCount: number, bankId: number, createdAt: string, updatedAt: string }> };
+export type ReportsQuery = { __typename?: 'Query', reports: { __typename?: 'PaginatedReports', hasMore: boolean, reports: Array<{ __typename?: 'Report', id: number, year: string, quarter: string, link: string, downloadCount: number, bankId: number, createdAt: string, updatedAt: string }> } };
 
 export const RegularBankResponseFragmentDoc = gql`
     fragment RegularBankResponse on Bank {
@@ -404,14 +410,17 @@ export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'q
 export const ReportsDocument = gql`
     query Reports($limit: Int!, $cursor: String) {
   reports(limit: $limit, cursor: $cursor) {
-    id
-    year
-    quarter
-    link
-    downloadCount
-    bankId
-    createdAt
-    updatedAt
+    hasMore
+    reports {
+      id
+      year
+      quarter
+      link
+      downloadCount
+      bankId
+      createdAt
+      updatedAt
+    }
   }
 }
     `;

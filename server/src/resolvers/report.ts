@@ -1,28 +1,40 @@
-import {Arg, Int, Mutation, Query, Resolver, UseMiddleware} from "type-graphql";
+import {Arg, Field, Int, Mutation, ObjectType, Query, Resolver, UseMiddleware} from "type-graphql";
 import {Report} from "../entities/Report";
 import {Bank} from "../entities/Bank";
 import {isAuth} from "../middleware/isAuth";
 import {getConnection} from "typeorm";
 import {CreateReportInput} from "./inputs/CreateReportInput";
 
+@ObjectType()
+class PaginatedReports {
+  @Field(_returns => [Report])
+  reports: Report[];
+
+  @Field(_returns => Boolean)
+  hasMore: boolean;
+}
+
 @Resolver()
 export class ReportResolver {
 
-  @Query((_returns) => [Report])
-  reports(
+  @Query((_returns) => PaginatedReports)
+  async reports(
     @Arg("limit", _returns => Int) limit: number,
     @Arg("cursor", _returns => String, {nullable: true}) cursor: string | null,
-  ): Promise<Report[]> {
+  ): Promise<PaginatedReports> {
     const realLimit = Math.min(50, limit);
+    const realLimitPlusOne = limit + 1;
     const qb = getConnection()
       .getRepository(Report)
       .createQueryBuilder("report")
       .orderBy('"createdAt"', "DESC")
-      .take(realLimit)
+      .take(realLimitPlusOne)
 
     if (cursor) qb.where('"createdAt" < :cursor', {cursor: new Date(parseInt(cursor))});
 
-    return qb.getMany();
+    const reports = await qb.getMany();
+
+    return {reports: reports.slice(0, realLimit), hasMore: reports.length === realLimitPlusOne};
   }
 
   @Query((_returns) => Report, {nullable: true})

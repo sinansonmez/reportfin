@@ -47,24 +47,24 @@ const Index = () => {
       <Nextlink href="/create-report">
         <Button colorScheme="blue">Create Report</Button>
       </Nextlink>
-      {!data?.reports && fetching ? (
+      {!data?.reports.reports && fetching ? (
         <div>Loading...</div>
       ) : (
         <Stack mt={2} spacing={2}>
-          {reportsView(data!.reports)}
+          {reportsView(data!.reports.reports)}
         </Stack>
       )
       }
-      {data &&
-      <Flex p={8} justifyContent="center">
-        <Button
-          isLoading={fetching} colorScheme="blue" onClick={() => {
+      {data && data.reports.hasMore ? (
+        <Flex p={8} justifyContent="center">
+          <Button
+            isLoading={fetching} colorScheme="blue" onClick={() => {
             setVariables({
               limit: variables.limit,
-              cursor: data.reports[data.reports.length - 1].createdAt
+              cursor: data.reports.reports[data.reports.reports.length - 1].createdAt
             })
-        }}>Load More</Button>
-      </Flex>}
+          }}>Load More</Button>
+        </Flex>) : null}
     </Layout>
   )
 }
