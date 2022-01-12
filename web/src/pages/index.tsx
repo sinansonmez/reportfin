@@ -29,13 +29,21 @@ const Index = () => {
         borderWidth="1px"
         borderRadius="4px"
         key={report.id}>
-        <Text flexGrow="2">{report.bankId}</Text>
+        <Button flexGrow="1" variant="link" colorScheme="blue">
+          <LinkOverlay href={"//" + report.bank.website} isExternal>{report.bank.name}</LinkOverlay>
+        </Button>
+        <Text flexGrow="1" textAlign="center">{report.bank.continent}</Text>
+        <Text flexGrow="1" textAlign="center">{report.bank.country}</Text>
         {/*TODO: show continent and country of the bank*/}
-        <Flex flexGrow="1" ml={2} alignItems="center">
+        <Flex flexGrow="1" ml={2} alignItems="center" justifyContent="center">
           <Text>{report.quarter}</Text>
           <Text>-</Text>
           <Text>{report.year}</Text>
         </Flex>
+        {/*TODO: every time this button is clicked increment report download count.
+        For this create a new mutation called increaseDownloadCount.
+        then use this mutation to update the report
+        */}
         <Button ml={2} colorScheme="blue" variant="outline">
           <LinkOverlay href={"//" + report.link} isExternal>Download</LinkOverlay>
         </Button>

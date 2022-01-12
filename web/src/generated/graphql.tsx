@@ -23,6 +23,7 @@ export type Bank = {
   id: Scalars['Float'];
   logo: Scalars['String'];
   name: Scalars['String'];
+  reports: Report;
   updatedAt: Scalars['String'];
   website: Scalars['String'];
 };
@@ -56,6 +57,7 @@ export type Mutation = {
   deleteBank?: Maybe<Scalars['Boolean']>;
   deleteReport?: Maybe<Scalars['Boolean']>;
   forgotPassword: Scalars['Boolean'];
+  increaseDownloadCount: Scalars['Boolean'];
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
@@ -92,6 +94,11 @@ export type MutationDeleteReportArgs = {
 
 export type MutationForgotPasswordArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationIncreaseDownloadCountArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -150,6 +157,7 @@ export type QueryReportsArgs = {
 
 export type Report = {
   __typename?: 'Report';
+  bank: Bank;
   bankId: Scalars['Float'];
   createdAt: Scalars['String'];
   downloadCount: Scalars['Float'];
@@ -256,7 +264,7 @@ export type ReportsQueryVariables = Exact<{
 }>;
 
 
-export type ReportsQuery = { __typename?: 'Query', reports: { __typename?: 'PaginatedReports', hasMore: boolean, reports: Array<{ __typename?: 'Report', id: number, year: string, quarter: string, link: string, downloadCount: number, bankId: number, createdAt: string, updatedAt: string }> } };
+export type ReportsQuery = { __typename?: 'Query', reports: { __typename?: 'PaginatedReports', hasMore: boolean, reports: Array<{ __typename?: 'Report', id: number, year: string, quarter: string, link: string, downloadCount: number, bankId: number, createdAt: string, updatedAt: string, bank: { __typename?: 'Bank', name: string, continent: string, country: string, website: string } }> } };
 
 export const RegularBankResponseFragmentDoc = gql`
     fragment RegularBankResponse on Bank {
@@ -418,6 +426,12 @@ export const ReportsDocument = gql`
       link
       downloadCount
       bankId
+      bank {
+        name
+        continent
+        country
+        website
+      }
       createdAt
       updatedAt
     }

@@ -29,34 +29,45 @@ export class ReportResolver {
 
     if (cursor) replacements.push(new Date(parseInt(cursor)));
 
-    const posts = await getConnection().query(`
-        SELECT *
-        JSON_BUILD_OBJECT(
-        "name": bank.name,
-        "continent": bank.continent,
-        "country": bank.country,
-        "website": bank.website,
-        "logo": bank.logo,
-        "createdAt": report."createdAt",
-        "updatedAt": report."updatedAt"
-        ) bank
+    /* this is returning report as this shape
+        {
+        id: 1,
+        year: '2007',
+        quarter: '1Q',
+        link: 'nih.gov/quam.json',
+        downloadCount: 0,
+        bankId: 1,
+        createdAt: 2022-01-08T21:51:46.629Z,
+        updatedAt: 2022-01-08T21:51:46.629Z,
+        name: 'ING',
+        continent: 'Europe',
+        logo: 'logo.img',
+        country: 'Netherlands',
+        website: 'www.ing.com',
+        bank: { // this part is coming from JSON_BUILD_OBJECT
+          name: 'ING',
+          continent: 'Europe',
+          country: 'Netherlands',
+          website: 'www.ing.com',
+          logo: 'logo.img'
+        }
+      }
+    */
+    const reports = await getConnection().query(`
+        SELECT *,
+               JSON_BUILD_OBJECT(
+                       'name', bank.name,
+                       'continent', bank.continent,
+                       'country', bank.country,
+                       'website', bank.website,
+                       'logo', bank.logo
+                   ) bank
         FROM report
                  INNER JOIN bank ON bank.id = report."bankId"
         ORDER BY report."createdAt" DESC
-            ${cursor ? `where  p."createdAt" < $2` : ''}
+            ${cursor ? `where report."createdAt" < $2` : ''}
         LIMIT $1
     `, replacements);
-
-    /*const qb = getConnection()
-      .getRepository(Report)
-      .createQueryBuilder("report")
-      .innerJoinAndSelect("report.bank", "bank", 'bank.id = report."bankId"')
-      .orderBy('"createdAt"', "DESC")
-      .take(realLimitPlusOne)*/
-
-    // if (cursor) qb.where('report."createdAt" < :cursor', {cursor: new Date(parseInt(cursor))});
-
-    // const reports = await qb.getMany();
 
     return {reports: reports.slice(0, realLimit), hasMore: reports.length === realLimitPlusOne};
   }
@@ -64,6 +75,15 @@ export class ReportResolver {
   @Query((_returns) => Report, {nullable: true})
   report(@Arg("id") id: number): Promise<Report | undefined> {
     return Report.findOne(id)
+  }
+
+  @Mutation((_returns) => Boolean)
+  async increaseDownloadCount(
+    @Arg("id") id: number,
+  ): Promise<boolean> {
+    // await getConnection().query(`UPDATE report SET "dowloadCount" = "dowloadCount" + 1 WHERE id = $1`, [id]);
+    await Report.update({id}, {downloadCount: () => `"downloadCount" + 1`})
+    return true
   }
 
   @Mutation((_returns) => Report)

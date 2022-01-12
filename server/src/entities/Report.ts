@@ -37,7 +37,7 @@ export class Report extends BaseEntity {
   @Column()
   bankId: number;
 
-  @Field()
+  @Field(_returns => Bank)
   @ManyToOne(() => Bank, bank => bank.reports)
   bank: Bank;
 

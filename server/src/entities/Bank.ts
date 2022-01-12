@@ -37,6 +37,7 @@ export class Bank extends BaseEntity {
   @Column()
   website: string;
 
+  @Field(_returns => Report)
   @OneToMany(() => Report, report => report.bank)
   reports: Report[];
 
