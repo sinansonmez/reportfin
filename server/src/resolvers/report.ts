@@ -24,15 +24,39 @@ export class ReportResolver {
   ): Promise<PaginatedReports> {
     const realLimit = Math.min(50, limit);
     const realLimitPlusOne = limit + 1;
-    const qb = getConnection()
+
+    const replacements: any[] = [realLimitPlusOne]
+
+    if (cursor) replacements.push(new Date(parseInt(cursor)));
+
+    const posts = await getConnection().query(`
+        SELECT *
+        JSON_BUILD_OBJECT(
+        "name": bank.name,
+        "continent": bank.continent,
+        "country": bank.country,
+        "website": bank.website,
+        "logo": bank.logo,
+        "createdAt": report."createdAt",
+        "updatedAt": report."updatedAt"
+        ) bank
+        FROM report
+                 INNER JOIN bank ON bank.id = report."bankId"
+        ORDER BY report."createdAt" DESC
+            ${cursor ? `where  p."createdAt" < $2` : ''}
+        LIMIT $1
+    `, replacements);
+
+    /*const qb = getConnection()
       .getRepository(Report)
       .createQueryBuilder("report")
+      .innerJoinAndSelect("report.bank", "bank", 'bank.id = report."bankId"')
       .orderBy('"createdAt"', "DESC")
-      .take(realLimitPlusOne)
+      .take(realLimitPlusOne)*/
 
-    if (cursor) qb.where('"createdAt" < :cursor', {cursor: new Date(parseInt(cursor))});
+    // if (cursor) qb.where('report."createdAt" < :cursor', {cursor: new Date(parseInt(cursor))});
 
-    const reports = await qb.getMany();
+    // const reports = await qb.getMany();
 
     return {reports: reports.slice(0, realLimit), hasMore: reports.length === realLimitPlusOne};
   }

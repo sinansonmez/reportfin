@@ -8,6 +8,12 @@ query Reports($limit: Int!, $cursor: String) {
             link
             downloadCount
             bankId
+            bank {
+                name
+                continent
+                country
+                website
+            }
             createdAt
             updatedAt
         }
