@@ -72,8 +72,6 @@ export class ReportResolver {
   async increaseDownloadCount(
     @Arg("id", _returns => Int) id: number,
   ): Promise<boolean> {
-    // await getConnection().query(`UPDATE report SET "dowloadCount" = "dowloadCount" + 1 WHERE id = $1`, [id]);
-    console.log("increase download count is clicked")
     await Report.update({id}, {downloadCount: () => `"downloadCount" + 1`})
     return true
   }
