@@ -21,6 +21,7 @@ const CreateBank: FunctionComponent<Props> = (props) => {
     const [, createBank] = useCreateBankMutation()
     const [error, setError] = React.useState("")
     const continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America"]
+
     return (
       <Layout>
         <Formik

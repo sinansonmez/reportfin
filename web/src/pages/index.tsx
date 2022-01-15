@@ -1,4 +1,4 @@
-import {AlertIcon, Alert, Button, Flex, LinkOverlay, Stack, Text} from "@chakra-ui/react";
+import {Alert, AlertIcon, Button, Flex, LinkOverlay, Stack, Text} from "@chakra-ui/react";
 import {withUrqlClient} from "next-urql";
 import {createUrqlClient} from "../utils/createUrqlClient";
 import Layout from "../components/Layout";
@@ -43,7 +43,7 @@ const Index = () => {
           <Text>{report.year}</Text>
         </Flex>
         <Button ml={2} colorScheme="blue" variant="outline" onClick={() => increaseDownloadCount({id: report.id})}>
-          <LinkOverlay href={"//" + report.link} isExternal>Download</LinkOverlay>
+          <LinkOverlay href={report.link} isExternal>Download</LinkOverlay>
         </Button>
       </Flex>
     )
