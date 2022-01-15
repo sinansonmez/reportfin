@@ -83,6 +83,7 @@ export class ReportResolver {
   ): Promise<Report> {
     const bankRecord = await Bank.findOne({where: {name: options.bank}})
     if (!bankRecord) throw new Error("Bank not found")
+    if (options.year.length !== 4) throw new Error("Invalid year format")
 
     const report = Report.create({
       year: options.year,

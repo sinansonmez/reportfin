@@ -9,6 +9,7 @@ import RadioField from "../components/RadioField";
 import Layout from "../components/Layout";
 import {useIsAuth} from "../utils/useIsAuth";
 import {useBanksQuery, useCreateReportMutation} from "../generated/graphql";
+import {createYearArray} from "../utils/createYearArray";
 
 interface OwnProps {
 }
@@ -32,13 +33,16 @@ const CreateReport: FunctionComponent<Props> = (props) => {
       return <option key={bankName} value={bankName}>{bankName}</option>
     })
 
+    const yearView = createYearArray().map(year => {
+      return <option key={year} value={year}>{year}</option>
+    })
+
     return (
       <Layout>
         <Formik
           initialValues={{bank: "", link: "", quarter: "", year: ""}}
           onSubmit={async (values) => {
             const response = await createReport({options: values})
-            console.log("values", values)
             if (response.error) {
               setError(response.error.message)
             } else {
@@ -54,7 +58,9 @@ const CreateReport: FunctionComponent<Props> = (props) => {
                 <RadioField label="Quarter" name="quarter" options={quarters}/>
               </Box>
               <Box mt={4}>
-                <InputField label="Year" name="year" placeholder="Year"/>
+                <Select name="year" placeholder="Year" onChange={handleChange}>
+                  {yearView}
+                </Select>
               </Box>
               <Box mt={4}>
                 <InputField label="Link" name="link" placeholder="Link"/>
