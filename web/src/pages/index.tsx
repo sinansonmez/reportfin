@@ -9,7 +9,7 @@ import React from "react";
 //TODO: create and admin page with create bank, edit bank, delete bank, create report, edit report, delete report
 // TODO: why when I logged in, it doesn't show that I'm logged in?
 const Index = () => {
-  const [variables, setVariables] = React.useState({limit: 4, cursor: null as null | string});
+  const [variables, setVariables] = React.useState({limit: 15, cursor: null as null | string});
   const [{data, fetching}] = useReportsQuery({variables});
   const [, increaseDownloadCount] = useIncreaseDownloadCountMutation()
 
