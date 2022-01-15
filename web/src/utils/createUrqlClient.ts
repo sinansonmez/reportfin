@@ -65,7 +65,7 @@ export const createUrqlClient = (ssrExchange: any) => ({
       updates: {
         Mutation: {
           // this is used to update cache (refetch new reports)  when user creates a new report
-          createPost: (_result, args, cache, info) => {
+          createReport: (_result, args, cache, info) => {
             const allFields = cache.inspectFields("Query");
             const fieldInfos = allFields.filter((info) => info.fieldName === "reports");
             fieldInfos.forEach((fi) => {
