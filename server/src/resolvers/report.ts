@@ -30,38 +30,29 @@ export class ReportResolver {
     if (cursor) replacements.push(new Date(parseInt(cursor)));
 
     /* this is returning report as this shape
-        {
-        id: 1,
-        year: '2007',
-        quarter: '1Q',
-        link: 'nih.gov/quam.json',
-        downloadCount: 0,
-        bankId: 1,
-        createdAt: 2022-01-08T21:51:46.629Z,
-        updatedAt: 2022-01-08T21:51:46.629Z,
-        name: 'ING',
-        continent: 'Europe',
-        logo: 'logo.img',
-        country: 'Netherlands',
-        website: 'www.ing.com',
-        bank: { // this part is coming from JSON_BUILD_OBJECT
-          name: 'ING',
-          continent: 'Europe',
-          country: 'Netherlands',
-          website: 'www.ing.com',
-          logo: 'logo.img'
-        }
+         {
+          id: 163,
+          year: '2008',
+          quarter: '2Q',
+          link: 'bbc.co.uk/congue/risus/semper/porta.json',
+          downloadCount: 0,
+          bankId: 1,
+          createdAt: 2022-01-02T15:59:31.000Z,
+          updatedAt: 2022-01-11T21:46:38.516Z,
+          bank: [Object]
+          }
       }
     */
     const reports = await getConnection().query(`
-        SELECT *,
+        SELECT report.*,
                JSON_BUILD_OBJECT(
+                       'id', bank.id,
                        'name', bank.name,
                        'continent', bank.continent,
                        'country', bank.country,
                        'website', bank.website,
                        'logo', bank.logo
-                   ) bank
+                   )          bank
         FROM report
                  INNER JOIN bank ON bank.id = report."bankId"
         ORDER BY report."createdAt" DESC
@@ -79,9 +70,10 @@ export class ReportResolver {
 
   @Mutation((_returns) => Boolean)
   async increaseDownloadCount(
-    @Arg("id") id: number,
+    @Arg("id", _returns => Int) id: number,
   ): Promise<boolean> {
     // await getConnection().query(`UPDATE report SET "dowloadCount" = "dowloadCount" + 1 WHERE id = $1`, [id]);
+    console.log("report id:", id);
     await Report.update({id}, {downloadCount: () => `"downloadCount" + 1`})
     return true
   }

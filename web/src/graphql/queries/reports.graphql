@@ -9,6 +9,7 @@ query Reports($limit: Int!, $cursor: String) {
             downloadCount
             bankId
             bank {
+                id
                 name
                 continent
                 country
