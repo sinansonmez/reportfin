@@ -52,11 +52,11 @@ export class ReportResolver {
                        'country', bank.country,
                        'website', bank.website,
                        'logo', bank.logo
-                   )          bank
+                   ) bank
         FROM report
                  INNER JOIN bank ON bank.id = report."bankId"
+            ${cursor ? `WHERE report."createdAt" < $2` : ''}
         ORDER BY report."createdAt" DESC
-            ${cursor ? `where report."createdAt" < $2` : ''}
         LIMIT $1
     `, replacements);
 
