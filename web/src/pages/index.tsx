@@ -2,15 +2,16 @@ import {AlertIcon, Alert, Button, Flex, LinkOverlay, Stack, Text} from "@chakra-
 import {withUrqlClient} from "next-urql";
 import {createUrqlClient} from "../utils/createUrqlClient";
 import Layout from "../components/Layout";
-import {useReportsQuery} from "../generated/graphql";
+import {useIncreaseDownloadCountMutation, useReportsQuery} from "../generated/graphql";
 import Nextlink from "next/link";
 import React from "react";
 
 //TODO: create and admin page with create bank, edit bank, delete bank, create report, edit report, delete report
 // TODO: why when I logged in, it doesn't show that I'm logged in?
 const Index = () => {
-  const [variables, setVariables] = React.useState({limit: 10, cursor: null as null | string});
+  const [variables, setVariables] = React.useState({limit: 4, cursor: null as null | string});
   const [{data, fetching}] = useReportsQuery({variables});
+  const [, increaseDownloadCount] = useIncreaseDownloadCountMutation()
 
   if (!fetching && !data) {
     return <Alert mt={2} status='error'><AlertIcon/>Oops, something went wrong. Send me an email:
@@ -32,24 +33,22 @@ const Index = () => {
         <Button flexGrow="1" variant="link" colorScheme="blue">
           <LinkOverlay href={"//" + report.bank.website} isExternal>{report.bank.name}</LinkOverlay>
         </Button>
+
         <Text flexGrow="1" textAlign="center">{report.bank.continent}</Text>
         <Text flexGrow="1" textAlign="center">{report.bank.country}</Text>
-        {/*TODO: show continent and country of the bank*/}
+
         <Flex flexGrow="1" ml={2} alignItems="center" justifyContent="center">
           <Text>{report.quarter}</Text>
           <Text>-</Text>
           <Text>{report.year}</Text>
         </Flex>
-        {/*TODO: every time this button is clicked increment report download count.
-        For this create a new mutation called increaseDownloadCount.
-        then use this mutation to update the report
-        */}
-        <Button ml={2} colorScheme="blue" variant="outline">
+        <Button ml={2} colorScheme="blue" variant="outline" onClick={() => increaseDownloadCount({id: report.id})}>
           <LinkOverlay href={"//" + report.link} isExternal>Download</LinkOverlay>
         </Button>
       </Flex>
     )
   }
+
   return (
     <Layout>
       <Nextlink href="/create-report">

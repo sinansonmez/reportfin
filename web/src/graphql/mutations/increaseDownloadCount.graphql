@@ -1,0 +1,3 @@
+mutation IncreaseDownloadCount($id: Int!) {
+    increaseDownloadCount(id: $id)
+}
