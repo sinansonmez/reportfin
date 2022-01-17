@@ -33,9 +33,6 @@ const CreateBank: FunctionComponent<Props> = (props) => {
     useEffect(() => {
       updateCountries()
       countryView()
-      console.log("country view", countryView())
-      console.log("use effect")
-      console.log("continent", continent)
     }, [continent])
 
     const updateCountries = () => {
@@ -83,7 +80,6 @@ const CreateBank: FunctionComponent<Props> = (props) => {
                   options={continentsArray}/>
               </Box>
               <Box mt={4}>
-                {/*<InputField label="Country" name="country" placeholder="Country"/>*/}
                 <Select name="country" placeholder="Country" onChange={handleChange} >
                   {countryView()}
                 </Select>
