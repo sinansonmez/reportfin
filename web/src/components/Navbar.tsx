@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {Badge, Box, Button, Flex, Heading} from "@chakra-ui/react";
+import {Badge, Box, Button, Flex, Heading, Link} from "@chakra-ui/react";
 import Nextlink from 'next/link';
 import {useLogoutMutation, useMeQuery} from "../generated/graphql";
 
@@ -19,7 +19,11 @@ const Navbar: FunctionComponent<Props> = (_props) => {
   } else if (!data?.me) {
     body = (
       <Flex width="100%" justifyContent="space-between">
-        <Heading color="white">ReportFin</Heading>
+        <Nextlink href="/">
+          <Link>
+            <Heading color="white">ReportFin</Heading>
+          </Link>
+        </Nextlink>
         <Box>
           <Nextlink href="/login">
             <Button type="button" mr={2} colorScheme="blue">Login</Button>
@@ -34,7 +38,11 @@ const Navbar: FunctionComponent<Props> = (_props) => {
   } else {
     body = (
       <Flex width="100%" justifyContent="space-between">
-        <Heading color="white">ReportFin</Heading>
+        <Nextlink href="/">
+          <Link>
+            <Heading color="white">ReportFin</Heading>
+          </Link>
+        </Nextlink>
         <Flex>
           <Badge mr={2} colorScheme="green" display="flex" alignItems="center">{data.me.username}</Badge>
           <Nextlink href="/">
