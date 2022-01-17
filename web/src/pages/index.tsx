@@ -45,6 +45,9 @@ const Index = () => {
         <Button ml={2} colorScheme="blue" variant="outline" onClick={() => increaseDownloadCount({id: report.id})}>
           <LinkOverlay href={report.link} isExternal>Download</LinkOverlay>
         </Button>
+        <Nextlink href="/report/[id]" as={`/report/${report.id}`}>
+          <Button visibility="hidden" colorScheme="blue">D</Button>
+        </Nextlink>
       </Flex>
     )
   }

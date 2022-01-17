@@ -1,0 +1,19 @@
+query Report($id: Int!) {
+    report(id: $id) {
+        id
+        year
+        quarter
+        link
+        downloadCount
+        bankId
+        bank {
+            id
+            name
+            continent
+            country
+            website
+        }
+        createdAt
+        updatedAt
+    }
+}

@@ -64,8 +64,8 @@ export class ReportResolver {
   }
 
   @Query((_returns) => Report, {nullable: true})
-  report(@Arg("id") id: number): Promise<Report | undefined> {
-    return Report.findOne(id)
+  report(@Arg("id", _returns => Int) id: number): Promise<Report | undefined> {
+    return Report.findOne(id, {relations: ["bank"]});
   }
 
   @Mutation((_returns) => Boolean)
