@@ -1,14 +1,21 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 import {withUrqlClient} from "next-urql";
 import {createUrqlClient} from "../utils/createUrqlClient";
 import {Form, Formik} from "formik";
 import InputField from "../components/InputField";
-import {Alert, AlertIcon, Box, Button} from "@chakra-ui/react";
+import {Alert, AlertIcon, Box, Button, Select} from "@chakra-ui/react";
 import {useRouter} from "next/router";
 import {useCreateBankMutation} from "../generated/graphql";
 import RadioField from "../components/RadioField";
 import Layout from "../components/Layout";
 import {useIsAuth} from "../utils/useIsAuth";
+import {
+  africaCountriesArray,
+  asiaCountriesArray,
+  continentsArray,
+  europeCountriesArray,
+  northAmericaCountriesArray, oceaniaCountriesArray, southAmericaCountriesArray
+} from "../utils/countriesList";
 
 interface OwnProps {
 }
@@ -20,7 +27,38 @@ const CreateBank: FunctionComponent<Props> = (props) => {
     const router = useRouter()
     const [, createBank] = useCreateBankMutation()
     const [error, setError] = React.useState("")
-    const continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America"]
+    const [continent, setContinent] = React.useState("")
+    let currentCountries: string[] = []
+
+    useEffect(() => {
+      updateCountries()
+      countryView()
+      console.log("country view", countryView())
+      console.log("use effect")
+      console.log("continent", continent)
+    }, [continent])
+
+    const updateCountries = () => {
+      console.log("continent inside switch", continent)
+      if (continent === "Africa") {
+        currentCountries = africaCountriesArray
+      } else if (continent === "Asia") {
+        currentCountries = asiaCountriesArray
+      } else if (continent === "Europe") {
+        currentCountries = europeCountriesArray
+      } else if (continent === "North America") {
+        currentCountries = northAmericaCountriesArray
+      } else if (continent === "South America") {
+        currentCountries = southAmericaCountriesArray
+      } else if (continent === "Oceania") {
+        currentCountries = oceaniaCountriesArray
+      } else {
+        currentCountries = []
+      }
+    }
+    const countryView = () => currentCountries.map((country) => {
+      return <option key={country} value={country}>{country}</option>
+    })
 
     return (
       <Layout>
@@ -34,14 +72,21 @@ const CreateBank: FunctionComponent<Props> = (props) => {
               await router.push("/")
             }
           }}>
-          {({isSubmitting}) => (
+          {({isSubmitting, handleChange}) => (
             <Form>
               <InputField label="Bank Name" name="name" placeholder="Bank Name"/>
               <Box mt={4}>
-                <RadioField label="Continent" name="continent" options={continents}/>
+                <RadioField
+                  onChange={(selectedContinent: string) => setContinent(selectedContinent)}
+                  label="Continent"
+                  name="continent"
+                  options={continentsArray}/>
               </Box>
               <Box mt={4}>
-                <InputField label="Country" name="country" placeholder="Country"/>
+                {/*<InputField label="Country" name="country" placeholder="Country"/>*/}
+                <Select name="country" placeholder="Country" onChange={handleChange} >
+                  {countryView()}
+                </Select>
               </Box>
               <Box mt={4}>
                 <InputField label="Website" name="website" placeholder="Website"/>
