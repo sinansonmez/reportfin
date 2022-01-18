@@ -20,35 +20,40 @@ const Index = () => {
 
 
   const reportsView = (data: any[]) => {
-    return data.map(report =>
-      <Flex
-        px={5}
-        py={2}
-        shadow="md"
-        alignItems="center"
-        justifyContent="space-evenly"
-        borderWidth="1px"
-        borderRadius="4px"
-        key={report.id}>
-        <Button flexGrow="1" variant="link" colorScheme="blue">
-          <LinkOverlay href={"//" + report.bank.website} isExternal>{report.bank.name}</LinkOverlay>
-        </Button>
+    return data.map(report => {
+        return <Flex
+          px={5}
+          py={2}
+          shadow="md"
+          alignItems="center"
+          justifyContent="space-between"
+          borderWidth="1px"
+          borderRadius="4px"
+          key={report.id}>
+          <Button width="20%" variant="link" colorScheme="blue">
+            <LinkOverlay href={"//" + report.bank.website} isExternal>{report.bank.name}</LinkOverlay>
+          </Button>
 
-        <Text flexGrow="1" textAlign="center">{report.bank.continent}</Text>
-        <Text flexGrow="1" textAlign="center">{report.bank.country}</Text>
+          <Nextlink href="/report/[id]" as={`/report/${report.id}`}>
+            <Text width="20%" textAlign="center">{report.bank.continent}</Text>
+          </Nextlink>
+          <Text width="20%" textAlign="center">{report.bank.country}</Text>
 
-        <Flex flexGrow="1" ml={2} alignItems="center" justifyContent="center">
-          <Text>{report.quarter}</Text>
-          <Text>-</Text>
-          <Text>{report.year}</Text>
-        </Flex>
-        <Button ml={2} colorScheme="blue" variant="outline" onClick={() => increaseDownloadCount({id: report.id})}>
-          <LinkOverlay href={report.link} isExternal>Download</LinkOverlay>
-        </Button>
-        <Nextlink href="/report/[id]" as={`/report/${report.id}`}>
-          <Button visibility="hidden" colorScheme="blue">D</Button>
-        </Nextlink>
-      </Flex>
+          <Flex width="20%" ml={2} alignItems="center" justifyContent="center">
+            <Text>{report.quarter}</Text>
+            <Text>-</Text>
+            <Text>{report.year}</Text>
+          </Flex>
+          <Button
+            width="20%"
+            ml={2}
+            colorScheme="blue"
+            variant="outline"
+            onClick={() => increaseDownloadCount({id: report.id})}>
+            <LinkOverlay href={report.link} isExternal>Download</LinkOverlay>
+          </Button>
+        </Flex>;
+      }
     )
   }
 
