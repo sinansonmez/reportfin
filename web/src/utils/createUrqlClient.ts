@@ -1,6 +1,13 @@
 import {dedupExchange, Exchange, fetchExchange, stringifyVariables} from "urql";
 import {cacheExchange, Resolver} from "@urql/exchange-graphcache";
-import {LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation} from "../generated/graphql";
+import {
+  DeleteReportMutationVariables,
+  LoginMutation,
+  LogoutMutation,
+  MeDocument,
+  MeQuery,
+  RegisterMutation
+} from "../generated/graphql";
 import {betterUpdateQuery} from "./betterUpdateQuery";
 import {pipe, tap} from "wonka";
 import Router from "next/router";
@@ -64,6 +71,12 @@ export const createUrqlClient = (ssrExchange: any) => ({
       },
       updates: {
         Mutation: {
+          deleteReport: (_result, args, cache, info) => {
+            cache.invalidate({
+              __typename: "Report",
+              id: (args as DeleteReportMutationVariables).id,
+            });
+          },
           // this is used to update cache (refetch new reports)  when user creates a new report
           createReport: (_result, args, cache, info) => {
             const allFields = cache.inspectFields("Query");

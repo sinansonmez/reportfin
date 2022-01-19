@@ -114,10 +114,10 @@ export class ReportResolver {
   @Mutation((_returns) => Boolean, {nullable: true})
   @UseMiddleware(isAuth)
   async deleteReport(
-    @Arg("id") id: number,
+    @Arg("id", _returns => Int) id: number,
   ): Promise<boolean> {
     const report = await Report.findOne(id)
-    if (!report) return false
+    if (!report) throw new Error("Report not found")
 
     await Report.delete(id);
     return true
