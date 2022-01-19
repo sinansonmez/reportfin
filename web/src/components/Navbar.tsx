@@ -45,6 +45,12 @@ const Navbar: FunctionComponent<Props> = (_props) => {
         </Nextlink>
         <Flex>
           <Badge mr={2} colorScheme="green" display="flex" alignItems="center">{data.me.username}</Badge>
+          <Nextlink href="/create-bank">
+            <Button mr={2}  colorScheme="blue">Create Bank</Button>
+          </Nextlink>
+          <Nextlink href="/create-report">
+            <Button mr={2}  colorScheme="blue">Create Report</Button>
+          </Nextlink>
           <Nextlink href="/">
             <Button
               type="button"

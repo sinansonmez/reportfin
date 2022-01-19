@@ -59,9 +59,6 @@ const Index = () => {
 
   return (
     <Layout>
-      <Nextlink href="/create-report">
-        <Button colorScheme="blue">Create Report</Button>
-      </Nextlink>
       {!data?.reports.reports && fetching ? (
         <div>Loading...</div>
       ) : (
