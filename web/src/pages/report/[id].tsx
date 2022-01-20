@@ -11,10 +11,10 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-const Post: FunctionComponent<Props> = (props) => {
+const Report: FunctionComponent<Props> = (props) => {
   const router = useRouter();
-  const postId = typeof router.query.id === 'string' ? parseInt(router.query.id) : -1;
-  const [{data, fetching, error}] = useReportQuery({pause: postId === -1, variables: {id: postId}})
+  const reportID = typeof router.query.id === 'string' ? parseInt(router.query.id) : -1;
+  const [{data, fetching, error}] = useReportQuery({pause: reportID === -1, variables: {id: reportID}})
 
   if (fetching) return <Layout>Loading...</Layout>
   if (error) {
@@ -35,4 +35,4 @@ const Post: FunctionComponent<Props> = (props) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Post);
+export default withUrqlClient(createUrqlClient)(Report);
