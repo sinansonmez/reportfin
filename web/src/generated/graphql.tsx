@@ -120,8 +120,10 @@ export type MutationUpdateBankArgs = {
 
 
 export type MutationUpdateReportArgs = {
-  id: Scalars['Float'];
+  id: Scalars['Int'];
   link: Scalars['String'];
+  quarter: Scalars['String'];
+  year: Scalars['String'];
 };
 
 export type PaginatedReports = {
@@ -261,6 +263,16 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
+
+export type UpdateReportMutationVariables = Exact<{
+  id: Scalars['Int'];
+  year: Scalars['String'];
+  quarter: Scalars['String'];
+  link: Scalars['String'];
+}>;
+
+
+export type UpdateReportMutation = { __typename?: 'Mutation', updateReport?: { __typename?: 'Report', id: number, year: string, quarter: string, link: string, downloadCount: number, bankId: number, createdAt: string, updatedAt: string } | null | undefined };
 
 export type BanksQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -424,6 +436,17 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const UpdateReportDocument = gql`
+    mutation UpdateReport($id: Int!, $year: String!, $quarter: String!, $link: String!) {
+  updateReport(id: $id, year: $year, quarter: $quarter, link: $link) {
+    ...RegularReportResponse
+  }
+}
+    ${RegularReportResponseFragmentDoc}`;
+
+export function useUpdateReportMutation() {
+  return Urql.useMutation<UpdateReportMutation, UpdateReportMutationVariables>(UpdateReportDocument);
 };
 export const BanksDocument = gql`
     query Banks {

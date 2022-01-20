@@ -10,7 +10,7 @@ import {
 } from "../generated/graphql";
 import Nextlink from "next/link";
 import React from "react";
-import {DeleteIcon} from "@chakra-ui/icons";
+import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
 
 //TODO: create and admin page with create bank, edit bank, delete bank, create report, edit report, delete report
 // TODO: why when I logged in, it doesn't show that I'm logged in?
@@ -63,6 +63,13 @@ const Index = () => {
               colorScheme="green"
               ml={1}>Details
             </Button>
+          </Nextlink>}
+          {user?.me && <Nextlink href="/report/edit/[id]" as={`/report/edit/${report.id}`}>
+            <IconButton
+              icon={<EditIcon/>}
+              ml={1}
+              colorScheme="yellow"
+              aria-label="Edit Report"/>
           </Nextlink>}
           {user?.me && <IconButton
             icon={<DeleteIcon/>}

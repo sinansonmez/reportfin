@@ -1,0 +1,5 @@
+mutation UpdateReport($id: Int!, $year: String!, $quarter: String!, $link: String!) {
+    updateReport(id: $id, year: $year, quarter: $quarter, link: $link) {
+        ...RegularReportResponse
+    }
+}

@@ -100,15 +100,20 @@ export class ReportResolver {
   @Mutation((_returns) => Report, {nullable: true})
   @UseMiddleware(isAuth)
   async updateReport(
-    @Arg("id") id: number,
+    @Arg("id", _returns => Int) id: number,
+    @Arg("year") year: string,
+    @Arg("quarter") quarter: string,
     @Arg("link") link: string,
   ): Promise<Report> {
-    const report = await Report.findOne(id)
-    if (!report) throw new Error("Bank not found");
-    if (typeof link !== "undefined") {
-      await Report.update({id}, {link}) // update logo
-    }
-    return report;
+    const result = await getConnection()
+      .createQueryBuilder()
+      .update(Report)
+      .set({year, quarter, link})
+      .where("id = :id", {id})
+      .returning("*")
+      .execute()
+
+    return result.raw[0]
   }
 
   @Mutation((_returns) => Boolean, {nullable: true})
