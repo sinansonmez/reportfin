@@ -1,16 +1,10 @@
-import {Alert, AlertIcon, Button, Flex, IconButton, LinkOverlay, Stack, Text} from "@chakra-ui/react";
+import {Alert, AlertIcon, Button, Flex, LinkOverlay, Stack, Text} from "@chakra-ui/react";
 import {withUrqlClient} from "next-urql";
 import {createUrqlClient} from "../utils/createUrqlClient";
 import Layout from "../components/Layout";
-import {
-  useDeleteReportMutation,
-  useIncreaseDownloadCountMutation,
-  useMeQuery,
-  useReportsQuery
-} from "../generated/graphql";
-import Nextlink from "next/link";
+import {useIncreaseDownloadCountMutation, useMeQuery, useReportsQuery} from "../generated/graphql";
 import React from "react";
-import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
+import DetailUpdateDeleteReportButtons from "./detailUpdateDeleteReportButtons";
 
 //TODO: create and admin page with create bank, edit bank, delete bank, create report, edit report, delete report
 // TODO: why when I logged in, it doesn't show that I'm logged in?
@@ -18,7 +12,6 @@ const Index = () => {
   const [variables, setVariables] = React.useState({limit: 15, cursor: null as null | string});
   const [{data, fetching}] = useReportsQuery({variables});
   const [{data: user}] = useMeQuery()
-  const [{error: deleteReportError}, deleteReport] = useDeleteReportMutation()
   const [, increaseDownloadCount] = useIncreaseDownloadCountMutation()
 
   if (!fetching && !data) {
@@ -57,26 +50,7 @@ const Index = () => {
             onClick={() => increaseDownloadCount({id: report.id})}>
             <LinkOverlay href={report.link} isExternal>Download</LinkOverlay>
           </Button>
-          {user?.me &&
-          <Nextlink href="/report/[id]" as={`/report/${report.id}`}>
-            <Button
-              colorScheme="green"
-              ml={1}>Details
-            </Button>
-          </Nextlink>}
-          {user?.me && <Nextlink href="/report/edit/[id]" as={`/report/edit/${report.id}`}>
-            <IconButton
-              icon={<EditIcon/>}
-              ml={1}
-              colorScheme="yellow"
-              aria-label="Edit Report"/>
-          </Nextlink>}
-          {user?.me && <IconButton
-            icon={<DeleteIcon/>}
-            ml={1}
-            colorScheme="red"
-            aria-label="Delete Report"
-            onClick={() => deleteReport({id: report.id})}/>}
+          {user?.me && <DetailUpdateDeleteReportButtons id={report.id}/>}
         </Flex>;
       }
     )
@@ -84,7 +58,6 @@ const Index = () => {
 
   return (
     <Layout>
-      {deleteReportError && <Alert mt={2} status='error'>{deleteReportError.message}</Alert>}
       {!data?.reports.reports && fetching ? (
         <div>Loading...</div>
       ) : (

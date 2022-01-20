@@ -2,9 +2,10 @@ import React, {FunctionComponent} from 'react';
 import {createUrqlClient} from "../../utils/createUrqlClient";
 import {withUrqlClient} from "next-urql";
 import {useRouter} from "next/router";
-import {Alert, AlertIcon, Box, Text} from "@chakra-ui/react";
+import {Alert, AlertIcon, Badge, Box, Divider, Link, Text} from "@chakra-ui/react";
 import Layout from "../../components/Layout";
 import {useReportQuery} from "../../generated/graphql";
+import DetailUpdateDeleteReportButtons from "../detailUpdateDeleteReportButtons";
 
 interface OwnProps {
 }
@@ -25,10 +26,13 @@ const Report: FunctionComponent<Props> = (props) => {
     <Layout>
       {data && data.report ? (
         <Box>
-          <Text>{data.report.id}</Text>
-          <Text>{data.report.bank.name}</Text>
-          <Text>{data.report.year}</Text>
-          <Text>{data.report.quarter}</Text>
+          <Badge colorScheme="blue" fontSize="24px" mb={2}  >{data.report.bank.name}</Badge>
+          <Divider/>
+          <Text>id: {data.report.id}</Text>
+          <Text>Year: {data.report.quarter} - {data.report.year}</Text>
+          <Link href={"//" + data.report.link} isExternal >Link: {data.report.link}</Link>
+          <Divider mb={2} />
+          <DetailUpdateDeleteReportButtons id={data.report.id}/>
         </Box>
       ) : <Alert mt={2} status='error'><AlertIcon/>Post not found</Alert>}
     </Layout>
