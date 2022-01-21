@@ -1,5 +1,5 @@
 import {dedupExchange, Exchange, fetchExchange, stringifyVariables} from "urql";
-import {cacheExchange, Resolver} from "@urql/exchange-graphcache";
+import {cacheExchange, Resolver, Cache} from "@urql/exchange-graphcache";
 import {
   DeleteReportMutationVariables,
   LoginMutation,
@@ -53,6 +53,14 @@ const cursorPagination = (): Resolver => {
   }
 }
 
+export const invalidateAllPosts = (cache: Cache) => {
+  const allFields = cache.inspectFields("Query");
+  const fieldInfos = allFields.filter((info) => info.fieldName === "reports");
+  fieldInfos.forEach((fi) => {
+    cache.invalidate('Query', "reports", fi.arguments || {})
+  })
+}
+
 export const createUrqlClient = (ssrExchange: any, ctx: any) => {
   let cookie = "";
   if (isServer()) {
@@ -78,19 +86,15 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
         },
         updates: {
           Mutation: {
-            deleteReport: (_result, args, cache, info) => {
+            deleteReport: (_result, args, cache, _info) => {
               cache.invalidate({
                 __typename: "Report",
                 id: (args as DeleteReportMutationVariables).id,
               });
             },
             // this is used to update cache (refetch new reports)  when user creates a new report
-            createReport: (_result, args, cache, info) => {
-              const allFields = cache.inspectFields("Query");
-              const fieldInfos = allFields.filter((info) => info.fieldName === "reports");
-              fieldInfos.forEach((fi) => {
-                cache.invalidate('Query', "reports", fi.arguments || {})
-              })
+            createReport: (_result, args, cache, _info) => {
+              invalidateAllPosts(cache);
             },
             login: (_result, args, cache, _info) => {
               betterUpdateQuery<LoginMutation, MeQuery>(
@@ -100,6 +104,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
                 (result, query) => {
                   return result.login.errors ? query : {me: result.login.user}
                 })
+              invalidateAllPosts(cache);
             },
             register: (_result, args, cache, _info) => {
               betterUpdateQuery<RegisterMutation, MeQuery>(

@@ -1,6 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {Badge, Box, Button, Flex, Heading, Link} from "@chakra-ui/react";
 import Nextlink from 'next/link';
+import {useRouter} from 'next/router';
 import {useLogoutMutation, useMeQuery} from "../generated/graphql";
 
 interface OwnProps {
@@ -9,6 +10,7 @@ interface OwnProps {
 type Props = OwnProps;
 
 const Navbar: FunctionComponent<Props> = (_props) => {
+  const router = useRouter();
   const [{fetching: logoutFetching}, logout] = useLogoutMutation()
   const [{data, fetching}] = useMeQuery()
   let body;
@@ -56,7 +58,10 @@ const Navbar: FunctionComponent<Props> = (_props) => {
               type="button"
               mr={2}
               colorScheme="blue"
-              onClick={() => logout()}
+              onClick={() => {
+                logout();
+                router.reload()
+              }}
               isLoading={logoutFetching}>Logout</Button>
           </Nextlink>
         </Flex>
