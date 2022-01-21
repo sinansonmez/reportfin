@@ -61,7 +61,7 @@ export class ReportResolver {
     `, replacements);*/
 
     const reports = await Report.find({
-      where: cursor ? {createdAt: LessThan(replacements[1])} : {createdAt: "1"},
+      where: cursor ? {createdAt: LessThan(replacements[1])} : {},
       take: replacements[0],
       relations: ["bank"]
     });
