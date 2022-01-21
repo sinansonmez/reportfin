@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dotenv-safe/config";
 import express from "express";
 import {ApolloServer} from "apollo-server-express";
 import {buildSchema} from "type-graphql";
@@ -20,9 +21,7 @@ import path from "path";
 const main = async () => {
   const conn = await createConnection({
     type: "postgres",
-    database: "reportfin2",
-    username: "postgres",
-    password: "postgres",
+    url: process.env.DATABASE_URL,
     logging: true,
     synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
@@ -33,9 +32,9 @@ const main = async () => {
   const app = express();
 
   const redisStore = connectRedis(session);
-  const redis = new Redis()
+  const redis = new Redis(process.env.REDIS_URL);
   app.use(cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN,
     credentials: true
   }))
 
@@ -51,10 +50,11 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax", // csrf
         // secure: false // cookie only works in https
-        secure: __prod__ // cookie only works in https
+        secure: __prod__, // cookie only works in https
+        domain: __prod__ ? ".vercel.app" : undefined
       },
       saveUninitialized: false,
-      secret: "apdjq*owek2104+'P'^I£#$ü£#[½'casjfh*012",
+      secret: process.env.SESSION_SECRET,
       resave: false
     })
   )
@@ -68,7 +68,7 @@ const main = async () => {
   })
   await apolloServer.start()
   apolloServer.applyMiddleware({app, cors: false});
-  app.listen(4000, () => console.log("Server listening on port 4000"));
+  app.listen(parseInt(process.env.PORT), () => console.log("Server listening on port 4000"));
 }
 
 main()
