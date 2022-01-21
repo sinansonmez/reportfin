@@ -1,4 +1,4 @@
-import {Alert, AlertIcon, Button, Flex, LinkOverlay, Stack, Text} from "@chakra-ui/react";
+import {Alert, AlertIcon, Box, Button, Flex, LinkOverlay, Stack, Text} from "@chakra-ui/react";
 import {withUrqlClient} from "next-urql";
 import {createUrqlClient} from "../utils/createUrqlClient";
 import Layout from "../components/Layout";
@@ -10,13 +10,18 @@ import DetailUpdateDeleteReportButtons from "./detailUpdateDeleteReportButtons";
 // TODO: why when I logged in, it doesn't show that I'm logged in?
 const Index = () => {
   const [variables, setVariables] = React.useState({limit: 15, cursor: null as null | string});
-  const [{data, fetching}] = useReportsQuery({variables});
+  const [{data, error, fetching}] = useReportsQuery({variables});
   const [{data: user}] = useMeQuery()
   const [, increaseDownloadCount] = useIncreaseDownloadCountMutation()
 
   if (!fetching && !data) {
-    return <Alert mt={2} status='error'><AlertIcon/>Oops, something went wrong. Send me an email:
-      sinansonmez@outlook.com. Please try again later</Alert>
+    return (
+      <Box>
+        <Alert mt={2} status='error'><AlertIcon/>Oops, something went wrong. Send me an email with the error message
+          below, sinansonmez@outlook.com. Please try again later</Alert>
+        <Alert mt={2} status='error'><AlertIcon/>{error?.message}</Alert>
+      </Box>
+    )
   }
 
   const reportsView = (data: any[]) => {

@@ -2,7 +2,7 @@ import {Arg, Field, Int, Mutation, ObjectType, Query, Resolver, UseMiddleware} f
 import {Report} from "../entities/Report";
 import {Bank} from "../entities/Bank";
 import {isAuth} from "../middleware/isAuth";
-import {getConnection} from "typeorm";
+import {getConnection, LessThan} from "typeorm";
 import {CreateReportInput} from "./inputs/CreateReportInput";
 
 @ObjectType()
@@ -43,7 +43,7 @@ export class ReportResolver {
           }
       }
     */
-    const reports = await getConnection().query(`
+    /*const reports = await getConnection().query(`
         SELECT report.*,
                JSON_BUILD_OBJECT(
                        'id', bank.id,
@@ -58,7 +58,13 @@ export class ReportResolver {
             ${cursor ? `WHERE report."createdAt" < $2` : ''}
         ORDER BY report."createdAt" DESC
         LIMIT $1
-    `, replacements);
+    `, replacements);*/
+
+    const reports = await Report.find({
+      where: cursor ? {createdAt: LessThan(replacements[1])} : {createdAt: "1"},
+      take: replacements[0],
+      relations: ["bank"]
+    });
 
     return {reports: reports.slice(0, realLimit), hasMore: reports.length === realLimitPlusOne};
   }
