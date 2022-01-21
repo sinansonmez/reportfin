@@ -23,7 +23,7 @@ const main = async () => {
     type: "postgres",
     url: process.env.DATABASE_URL,
     logging: true,
-    synchronize: true,
+    // synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Bank, User, Report]
   })
@@ -38,6 +38,7 @@ const main = async () => {
     credentials: true
   }))
 
+  app.set("proxy", 1)
   app.use(
     session({
       name: COOKIE_NAME,

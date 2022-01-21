@@ -2,8 +2,8 @@ import {MigrationInterface, QueryRunner} from "typeorm";
 
 export class FakeReport1641937465490 implements MigrationInterface {
 
-  public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`
+  public async up(_queryRunner: QueryRunner): Promise<void> {
+    /*await queryRunner.query(`
         insert into report (year, quarter, link, "bankId", "createdAt")
         values (1988, '1Q', 'ycombinator.com/orci/luctus/et/ultrices.jpg', 1, '2021-09-07T13:07:05Z');
         insert into report (year, quarter, link, "bankId", "createdAt")
@@ -213,7 +213,7 @@ export class FakeReport1641937465490 implements MigrationInterface {
         insert into report (year, quarter, link, "bankId", "createdAt")
         values (1985, '2Q', 'time.com/pulvinar/lobortis.js', 1, '2021-08-08T22:52:49Z');
 
-    `)
+    `)*/
   }
 
   public async down(_queryRunner: QueryRunner): Promise<void> {
