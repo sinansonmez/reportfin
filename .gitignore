@@ -5,7 +5,6 @@ web/.pnp
 server/.pnp
 web/.pnp.js
 server/.pnp.js
-dist
 node_modules
 
 # testing
