@@ -33,7 +33,6 @@ const main = async () => {
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         entities: [Bank_1.Bank, User_1.User, Report_1.Report],
-        ssl: constants_1.__prod__,
         extra: {
             rejectUnauthorized: false,
         }
