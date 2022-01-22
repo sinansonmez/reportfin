@@ -4,6 +4,6 @@
     <file url="PROJECT" dialect="PostgreSQL" />
   </component>
   <component name="SqlResolveMappings">
-    <file url="file://$PROJECT_DIR$/server/src/resolvers/report.ts" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;name&quot;:{     &quot;@qname&quot;:&quot;b18647e4-b002-4549-97bd-89c54407d52c&quot;    },    &quot;group&quot;:{     &quot;@kind&quot;:&quot;database&quot;,     &quot;node&quot;:{      &quot;name&quot;:{       &quot;@qname&quot;:&quot;reportfin2&quot;      }     }    }   }  } }}" />
+    <file url="file://$PROJECT_DIR$/src/resolvers/report.ts" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;name&quot;:{     &quot;@qname&quot;:&quot;b18647e4-b002-4549-97bd-89c54407d52c&quot;    },    &quot;group&quot;:{     &quot;@kind&quot;:&quot;database&quot;,     &quot;node&quot;:{      &quot;name&quot;:{       &quot;@qname&quot;:&quot;reportfin2&quot;      }     }    }   }  } }}" />
   </component>
 </project>
