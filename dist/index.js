@@ -54,7 +54,7 @@ const main = async () => {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
             sameSite: "lax",
-            secure: constants_1.__prod__,
+            secure: false,
             domain: constants_1.__prod__ ? "reportfin.vercel.app" : undefined
         },
         saveUninitialized: false,

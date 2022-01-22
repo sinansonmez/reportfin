@@ -39,7 +39,6 @@ const CreateBank: FunctionComponent<Props> = (_props) => {
     }, [continent])
 
     const updateCountries = () => {
-      console.log("continent inside switch", continent)
       if (continent === "Africa") {
         currentCountries = africaCountriesArray
       } else if (continent === "Asia") {
