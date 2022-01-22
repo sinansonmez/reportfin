@@ -56,8 +56,8 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
         sameSite: "lax", // csrf
-        secure: false, // cookie only works in http
-        // secure: __prod__, // cookie only works in https
+        // secure: false // cookie only works in http
+        secure: __prod__, // cookie only works in https
         domain: __prod__ ? "reportfin.vercel.app" : undefined
       },
       saveUninitialized: false,
