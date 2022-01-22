@@ -13,7 +13,6 @@ interface OwnProps {
   label: string;
   options: string[];
   name: string;
-  onChange?: (value: string) => void;
 }
 
 type Props = OwnProps;
@@ -24,7 +23,7 @@ const RadioField: FunctionComponent<Props> = ({label, options, ...props}) => {
     // error can be an empty string we cast it to false (boolean)
     <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      <RadioGroup id={props.name} {...field} {...props}>
+      <RadioGroup id={props.name} {...field} {...props} >
         <Stack direction='row'>
           {options.map((value) => {
             return (

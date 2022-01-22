@@ -3,6 +3,7 @@ import {countries} from "countries-list";
 export const continentsArray = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America"]
 
 const countriesArray = Object.entries(countries);
+export const allCountriesArray = countriesArray.map(country => country[1].name);
 
 const europeCountries = countriesArray.filter(country => country[1].continent === "EU")
 export const europeCountriesArray = europeCountries.map(country => country[1].name);

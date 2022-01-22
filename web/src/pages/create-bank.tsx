@@ -11,10 +11,13 @@ import Layout from "../components/Layout";
 import {useIsAuth} from "../utils/useIsAuth";
 import {
   africaCountriesArray,
+  allCountriesArray,
   asiaCountriesArray,
   continentsArray,
   europeCountriesArray,
-  northAmericaCountriesArray, oceaniaCountriesArray, southAmericaCountriesArray
+  northAmericaCountriesArray,
+  oceaniaCountriesArray,
+  southAmericaCountriesArray
 } from "../utils/countriesList";
 
 interface OwnProps {
@@ -22,13 +25,13 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-const CreateBank: FunctionComponent<Props> = (props) => {
+const CreateBank: FunctionComponent<Props> = (_props) => {
     useIsAuth()
     const router = useRouter()
     const [, createBank] = useCreateBankMutation()
     const [error, setError] = React.useState("")
     const [continent, setContinent] = React.useState("")
-    let currentCountries: string[] = []
+    let currentCountries: string[] = allCountriesArray
 
     useEffect(() => {
       updateCountries()
@@ -50,9 +53,10 @@ const CreateBank: FunctionComponent<Props> = (props) => {
       } else if (continent === "Oceania") {
         currentCountries = oceaniaCountriesArray
       } else {
-        currentCountries = []
+        currentCountries = allCountriesArray
       }
     }
+
     const countryView = () => currentCountries.map((country) => {
       return <option key={country} value={country}>{country}</option>
     })
@@ -75,10 +79,6 @@ const CreateBank: FunctionComponent<Props> = (props) => {
               <InputField label="Bank Name" name="name" placeholder="Bank Name"/>
               <Box mt={4}>
                 <RadioField
-                  onChange={(selectedContinent: string) => {
-                    setContinent(selectedContinent)
-                    console.log("continent", selectedContinent);
-                  }}
                   label="Continent"
                   name="continent"
                   options={continentsArray}/>
