@@ -30,7 +30,7 @@ const main = async () => {
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Bank, User, Report],
-    ssl: __prod__ ? {rejectUnauthorized: false} : false,
+    ssl: __prod__ ? {rejectUnauthorized: false} : false, // change to true in development
   })
 
   await conn.runMigrations()
@@ -57,7 +57,7 @@ const main = async () => {
         sameSite: "lax", // csrf
         // secure: false // cookie only works in https
         secure: __prod__, // cookie only works in https
-        domain: __prod__ ? ".vercel.app" : undefined
+        domain: __prod__ ? "reportfin.vercel.app" : undefined
       },
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET,
