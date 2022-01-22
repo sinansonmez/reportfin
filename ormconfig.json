@@ -5,8 +5,8 @@
   "username": "postgres",
   "password": "postgres",
   "database": "reportfin3",
-  "synchronize": true,
   "logging": true,
+  "ssl": true,
   "entities": ["dist/entities/**/*.js"],
   "migrations": ["dist/migrations/**/*.js"]
 }
