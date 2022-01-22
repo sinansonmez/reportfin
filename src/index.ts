@@ -22,6 +22,11 @@ const main = async () => {
   const conn = await createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL,
+    host: process.env.PG_HOST,
+    username: process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
+    port: parseInt(process.env.PORT),
+    database: process.env.PG_DATABASE,
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Bank, User, Report],
