@@ -38,12 +38,12 @@ const main = async () => {
 
   const redisStore = connectRedis(session);
   const redis = new Redis(process.env.REDIS_URL);
+  app.set("trust proxy", 1)
   app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true
   }))
 
-  app.set("proxy", 1)
   app.use(
     session({
       name: COOKIE_NAME,
@@ -64,10 +64,6 @@ const main = async () => {
       resave: false
     })
   )
-
-  console.log("---------------")
-  console.log("app", app)
-  console.log("---------------")
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
