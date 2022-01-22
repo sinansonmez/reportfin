@@ -25,9 +25,18 @@ const main = async () => {
     const conn = await (0, typeorm_1.createConnection)({
         type: "postgres",
         url: process.env.DATABASE_URL,
+        host: process.env.PG_HOST,
+        username: process.env.PG_USER,
+        password: process.env.PG_PASSWORD,
+        port: parseInt(process.env.PORT),
+        database: process.env.PG_DATABASE,
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
-        entities: [Bank_1.Bank, User_1.User, Report_1.Report]
+        entities: [Bank_1.Bank, User_1.User, Report_1.Report],
+        ssl: constants_1.__prod__,
+        extra: {
+            rejectUnauthorized: false,
+        }
     });
     await conn.runMigrations();
     const app = (0, express_1.default)();
