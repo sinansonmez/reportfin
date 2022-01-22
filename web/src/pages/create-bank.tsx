@@ -57,8 +57,8 @@ const CreateBank: FunctionComponent<Props> = (props) => {
       return <option key={country} value={country}>{country}</option>
     })
 
-  // @ts-ignore
-  return (
+    // @ts-ignore
+    return (
       <Layout>
         <Formik
           initialValues={{name: "", continent: "", country: "", logo: "", website: ""}}
@@ -75,12 +75,16 @@ const CreateBank: FunctionComponent<Props> = (props) => {
               <InputField label="Bank Name" name="name" placeholder="Bank Name"/>
               <Box mt={4}>
                 <RadioField
+                  onChange={(selectedContinent: string) => {
+                    setContinent(selectedContinent)
+                    console.log("continent", selectedContinent);
+                  }}
                   label="Continent"
                   name="continent"
                   options={continentsArray}/>
               </Box>
               <Box mt={4}>
-                <Select name="country" placeholder="Country" onChange={handleChange} >
+                <Select name="country" placeholder="Country" onChange={handleChange}>
                   {countryView()}
                 </Select>
               </Box>

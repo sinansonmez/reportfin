@@ -13,12 +13,10 @@ interface OwnProps {
   label: string;
   options: string[];
   name: string;
+  onChange?: (value: string) => void;
 }
 
 type Props = OwnProps;
-
-// "" -> false
-// "error message" -> true
 
 const RadioField: FunctionComponent<Props> = ({label, options, ...props}) => {
   const [field, {error}] = useField(props)
