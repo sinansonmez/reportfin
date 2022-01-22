@@ -64,7 +64,10 @@ const main = async () => {
       resave: false
     })
   )
-  console.log("app.use", app.use)
+
+  console.log("---------------")
+  console.log("app", app)
+  console.log("---------------")
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
