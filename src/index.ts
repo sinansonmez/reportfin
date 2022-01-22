@@ -30,10 +30,7 @@ const main = async () => {
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Bank, User, Report],
-    ssl: __prod__,
-    extra: {
-      rejectUnauthorized: false,
-    }
+    ssl: __prod__ ? {rejectUnauthorized: false} : false,
   })
 
   await conn.runMigrations()
