@@ -57,6 +57,7 @@ const CreateBank: FunctionComponent<Props> = (props) => {
       return <option key={country} value={country}>{country}</option>
     })
 
+  // @ts-ignore
   return (
       <Layout>
         <Formik
