@@ -57,7 +57,7 @@ const CreateBank: FunctionComponent<Props> = (props) => {
       return <option key={country} value={country}>{country}</option>
     })
 
-    return (
+  return (
       <Layout>
         <Formik
           initialValues={{name: "", continent: "", country: "", logo: "", website: ""}}
