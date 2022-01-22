@@ -55,12 +55,13 @@ const main = async () => {
             httpOnly: true,
             sameSite: "lax",
             secure: constants_1.__prod__,
-            domain: constants_1.__prod__ ? "https://reportfin.vercel.app" : undefined
+            domain: constants_1.__prod__ ? "reportfin.vercel.app" : undefined
         },
         saveUninitialized: false,
         secret: process.env.SESSION_SECRET,
         resave: false
     }));
+    console.log("app.use", app.use);
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: await (0, type_graphql_1.buildSchema)({
             resolvers: [bank_1.BankResolver, user_1.UserResolver, report_1.ReportResolver],
