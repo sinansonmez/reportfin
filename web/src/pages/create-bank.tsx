@@ -75,7 +75,6 @@ const CreateBank: FunctionComponent<Props> = (props) => {
               <InputField label="Bank Name" name="name" placeholder="Bank Name"/>
               <Box mt={4}>
                 <RadioField
-                  onChange={(selectedContinent: string) => setContinent(selectedContinent)}
                   label="Continent"
                   name="continent"
                   options={continentsArray}/>

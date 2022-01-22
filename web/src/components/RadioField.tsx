@@ -13,7 +13,6 @@ interface OwnProps {
   label: string;
   options: string[];
   name: string;
-  onChange: (value: string) => void;
 }
 
 type Props = OwnProps;
@@ -21,7 +20,7 @@ type Props = OwnProps;
 // "" -> false
 // "error message" -> true
 
-const RadioField: FunctionComponent<Props> = ({label, options, onChange, ...props}) => {
+const RadioField: FunctionComponent<Props> = ({label, options, ...props}) => {
   const [field, {error}] = useField(props)
   return (
     // error can be an empty string we cast it to false (boolean)
