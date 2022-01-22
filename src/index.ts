@@ -45,6 +45,7 @@ const main = async () => {
     credentials: true
   }))
 
+  // TODO: fix cookie issue
   app.use(
     session({
       name: COOKIE_NAME,
