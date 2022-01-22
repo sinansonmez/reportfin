@@ -18,6 +18,7 @@ import {Report} from "./entities/Report";
 import {ReportResolver} from "./resolvers/report";
 import path from "path";
 
+// change NODE_ENV to development in local development
 const main = async () => {
   const conn = await createConnection({
     type: "postgres",
@@ -30,7 +31,7 @@ const main = async () => {
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Bank, User, Report],
-    ssl: __prod__ ? {rejectUnauthorized: false} : false, // change to true in development
+    ssl: __prod__ ? {rejectUnauthorized: false} : false
   })
 
   await conn.runMigrations()
@@ -40,7 +41,7 @@ const main = async () => {
   const redis = new Redis(process.env.REDIS_URL);
   app.set("trust proxy", 1)
   app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: __prod__ ? process.env.CORS_ORIGIN : "http://localhost:3000",
     credentials: true
   }))
 

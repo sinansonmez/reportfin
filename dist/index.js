@@ -33,7 +33,7 @@ const main = async () => {
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         entities: [Bank_1.Bank, User_1.User, Report_1.Report],
-        ssl: constants_1.__prod__ ? { rejectUnauthorized: false } : false,
+        ssl: constants_1.__prod__ ? { rejectUnauthorized: false } : false
     });
     await conn.runMigrations();
     const app = (0, express_1.default)();
@@ -41,7 +41,7 @@ const main = async () => {
     const redis = new ioredis_1.default(process.env.REDIS_URL);
     app.set("trust proxy", 1);
     app.use((0, cors_1.default)({
-        origin: process.env.CORS_ORIGIN,
+        origin: constants_1.__prod__ ? process.env.CORS_ORIGIN : "http://localhost:3000",
         credentials: true
     }));
     app.use((0, express_session_1.default)({
