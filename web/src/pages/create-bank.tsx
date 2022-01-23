@@ -66,6 +66,7 @@ const CreateBank: FunctionComponent<Props> = (_props) => {
           initialValues={{name: "", continent: "", country: "", logo: "", website: ""}}
           onSubmit={async (values) => {
             const response = await createBank({options: values})
+            console.log("create bank response", response)
             if (response.error) {
               setError(response.error.message)
             } else {

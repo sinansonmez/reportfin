@@ -21,6 +21,9 @@ export class BankResolver {
   async createBank(
     @Arg("options") options: CreateBankInput,
   ): Promise<Bank> {
+    console.log("----------")
+    console.log("create bank options", options);
+    console.log("----------")
     const bank = Bank.create({
       name: options.name,
       continent: options.continent,

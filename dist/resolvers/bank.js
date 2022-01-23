@@ -25,6 +25,9 @@ let BankResolver = class BankResolver {
         return Bank_1.Bank.findOne(id);
     }
     async createBank(options) {
+        console.log("----------");
+        console.log("create bank options", options);
+        console.log("----------");
         const bank = Bank_1.Bank.create({
             name: options.name,
             continent: options.continent,

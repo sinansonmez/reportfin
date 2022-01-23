@@ -60,7 +60,7 @@ const main = async () => {
         sameSite: "lax", // csrf
         // secure: false // cookie only works in http
         secure: __prod__, // cookie only works in https
-        domain: __prod__ ? "vercel.app" : undefined
+        domain: __prod__ ? "vercel.app/" : undefined
       } as CookieOptions ,
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET,
