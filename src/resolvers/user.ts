@@ -166,6 +166,9 @@ export class UserResolver {
     }
 
     req.session.userId = user.id;
+    console.log("----------")
+    console.log("req.session", req.session);
+    console.log("----------")
     return {user};
   }
 
