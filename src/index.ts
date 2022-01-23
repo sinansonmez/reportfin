@@ -55,11 +55,11 @@ const main = async () => {
       }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
-        httpOnly: false,
-        sameSite: "none", // csrf
+        httpOnly: true,
+        sameSite: "lax", // csrf
         // secure: false // cookie only works in http
         secure: __prod__, // cookie only works in https
-        domain: __prod__ ? "reportfin.vercel.app" : undefined
+        domain: __prod__ ? "https://reportfin.vercel.app" : undefined
       } as CookieOptions ,
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET,
