@@ -53,9 +53,9 @@ const main = async () => {
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
-            sameSite: "lax",
+            sameSite: "none",
             secure: constants_1.__prod__,
-            domain: constants_1.__prod__ ? "https://reportfin.vercel.app" : undefined
+            domain: constants_1.__prod__ ? "vercel.app" : undefined
         },
         saveUninitialized: false,
         secret: process.env.SESSION_SECRET,
