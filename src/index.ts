@@ -6,7 +6,7 @@ import {buildSchema} from "type-graphql";
 import {BankResolver} from "./resolvers/bank";
 import {UserResolver} from "./resolvers/user";
 import Redis from "ioredis";
-import session from "express-session";
+import session, {CookieOptions} from "express-session";
 import connectRedis from "connect-redis";
 import {__prod__, COOKIE_NAME} from "./constants";
 import {MyContext} from "./types";
@@ -60,7 +60,7 @@ const main = async () => {
         // secure: false // cookie only works in http
         secure: __prod__, // cookie only works in https
         domain: __prod__ ? "reportfin.vercel.app" : undefined
-      },
+      } as CookieOptions ,
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET,
       resave: false
