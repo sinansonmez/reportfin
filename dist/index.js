@@ -52,7 +52,7 @@ const main = async () => {
         }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
-            httpOnly: true,
+            httpOnly: false,
             sameSite: "none",
             secure: constants_1.__prod__,
             domain: constants_1.__prod__ ? "reportfin.vercel.app" : undefined
