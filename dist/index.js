@@ -50,13 +50,12 @@ const main = async () => {
             client: redis,
             disableTouch: true
         }),
-        proxy: true,
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
             sameSite: "lax",
             secure: constants_1.__prod__,
-            domain: constants_1.__prod__ ? "vercel.app/" : undefined
+            domain: constants_1.__prod__ ? "reportfin.vercel.app" : undefined
         },
         saveUninitialized: false,
         secret: process.env.SESSION_SECRET,
