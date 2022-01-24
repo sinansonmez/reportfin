@@ -11,6 +11,9 @@ declare global {
       PG_HOST: string;
       PG_PORT: string;
       PG_DATABASE: string;
+      NODE_ENV: string;
+      DOMAIN: string;
+      PGSSLMODE: string;
     }
   }
 }
