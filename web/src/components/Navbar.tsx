@@ -3,6 +3,7 @@ import {Badge, Box, Button, Flex, Heading, Link} from "@chakra-ui/react";
 import Nextlink from 'next/link';
 import {useRouter} from 'next/router';
 import {useLogoutMutation, useMeQuery} from "../generated/graphql";
+import SocialMediaContact from "./SocialMediaContact";
 
 interface OwnProps {
 }
@@ -27,6 +28,7 @@ const Navbar: FunctionComponent<Props> = (_props) => {
           </Link>
         </Nextlink>
         <Box>
+          <SocialMediaContact/>
           <Nextlink href="/login">
             <Button type="button" mr={2} colorScheme="blue">Login</Button>
           </Nextlink>
@@ -46,6 +48,7 @@ const Navbar: FunctionComponent<Props> = (_props) => {
           </Link>
         </Nextlink>
         <Flex>
+          <SocialMediaContact/>
           <Badge mr={2} colorScheme="green" display="flex" alignItems="center">{data.me.username}</Badge>
           <Nextlink href="/create-bank">
             <Button mr={2} colorScheme="blue">Create Bank</Button>
