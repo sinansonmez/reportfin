@@ -27,7 +27,7 @@ const Navbar: FunctionComponent<Props> = (_props) => {
             <Heading color="white">ReportFin</Heading>
           </Link>
         </Nextlink>
-        <Box>
+        <Flex>
           <SocialMediaContact/>
           <Nextlink href="/login">
             <Button type="button" mr={2} colorScheme="blue">Login</Button>
@@ -35,7 +35,7 @@ const Navbar: FunctionComponent<Props> = (_props) => {
           <Nextlink href="/register">
             <Button type="button" mr={2} colorScheme="blue">Register</Button>
           </Nextlink>
-        </Box>
+        </Flex>
       </Flex>
     )
     // user logged in
