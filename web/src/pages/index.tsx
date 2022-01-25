@@ -64,7 +64,16 @@ const Index = () => {
   return (
     <Layout>
       {!data?.reports.reports && fetching ? (
-        <div>Loading...</div>
+        <Box >
+          <Button
+            w="100%"
+            isLoading
+            loadingText='Loading'
+            colorScheme='blue'
+            spinnerPlacement='start'
+          >
+          </Button>
+        </Box>
       ) : (
         <Stack mt={2} spacing={2}>
           {reportsView(data!.reports.reports)}

@@ -38,7 +38,7 @@ const Banks: FunctionComponent<Props> = (props) => {
           borderRadius="4px"
           key={bank.id}>
 
-          <Image src={bank.logo} w={24} />
+          <Image src={bank.logo} w={24}/>
           <Text width="40%" textAlign="center">{bank.name}</Text>
           <Text width="15%" textAlign="center">{bank.continent}</Text>
           <Text width="20%" textAlign="center">{bank.country}</Text>
@@ -59,7 +59,16 @@ const Banks: FunctionComponent<Props> = (props) => {
   return (
     <Layout>
       {!data?.banks && fetching ? (
-        <div>Loading...</div>
+        <Box >
+          <Button
+            w="100%"
+            isLoading
+            loadingText='Loading'
+            colorScheme='blue'
+            spinnerPlacement='start'
+          >
+          </Button>
+        </Box>
       ) : (
         <Stack mt={2} spacing={2}>
           {banksView(data!.banks)}
