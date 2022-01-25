@@ -29,6 +29,12 @@ const Navbar: FunctionComponent<Props> = (_props) => {
         </Nextlink>
         <Flex>
           <SocialMediaContact/>
+          <Nextlink href="/">
+            <Button mr={2} colorScheme="blue">Reports</Button>
+          </Nextlink>
+          <Nextlink href="/banks">
+            <Button mr={2} colorScheme="blue">Banks</Button>
+          </Nextlink>
           <Nextlink href="/login">
             <Button type="button" mr={2} colorScheme="blue">Login</Button>
           </Nextlink>
@@ -50,6 +56,12 @@ const Navbar: FunctionComponent<Props> = (_props) => {
         <Flex>
           <SocialMediaContact/>
           <Badge mr={2} colorScheme="green" display="flex" alignItems="center">{data.me.username}</Badge>
+          <Nextlink href="/">
+            <Button mr={2} colorScheme="blue">Reports</Button>
+          </Nextlink>
+          <Nextlink href="/banks">
+            <Button mr={2} colorScheme="blue">Banks</Button>
+          </Nextlink>
           <Nextlink href="/create-bank">
             <Button mr={2} colorScheme="blue">Create Bank</Button>
           </Nextlink>
