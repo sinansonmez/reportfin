@@ -36,7 +36,7 @@ const Index = () => {
           borderRadius="4px"
           key={report.id}>
           <Button width="20%" variant="link" colorScheme="blue">
-            <LinkOverlay href={"//" + report.bank.website} isExternal>{report.bank.name}</LinkOverlay>
+            <LinkOverlay href={report.bank.website} isExternal>{report.bank.name}</LinkOverlay>
           </Button>
 
           <Text width="20%" textAlign="center">{report.bank.continent}</Text>
