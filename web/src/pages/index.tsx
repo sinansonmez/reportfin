@@ -15,6 +15,7 @@ const Index = () => {
   const [, increaseDownloadCount] = useIncreaseDownloadCountMutation()
 
   if (!fetching && !data) {
+    console.log("error", error);
     return (
       <Box>
         <Alert mt={2} status='error'><AlertIcon/>Oops, something went wrong. Send me an email with the error message
