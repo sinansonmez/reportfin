@@ -31,7 +31,7 @@ const main = async () => {
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Bank, User, Report],
-    ssl: __prod__ ? {rejectUnauthorized: false} : false
+    // ssl: __prod__ ? {rejectUnauthorized: false} : false
   })
 
   await conn.runMigrations()
@@ -45,7 +45,6 @@ const main = async () => {
     credentials: true
   }))
 
-  // TODO: fix cookie issue
   app.use(
     session({
       name: COOKIE_NAME,
