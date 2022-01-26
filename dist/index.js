@@ -33,6 +33,7 @@ const main = async () => {
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         entities: [Bank_1.Bank, User_1.User, Report_1.Report],
+        ssl: false
     });
     await conn.runMigrations();
     const app = (0, express_1.default)();
