@@ -37,7 +37,6 @@ server/yarn-error.log*
 
 # local env files
 .env
-.env.example
 .env.production
 web/.env
 web/.env.local
