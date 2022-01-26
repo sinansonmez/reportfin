@@ -36,8 +36,11 @@ server/yarn-debug.log*
 server/yarn-error.log*
 
 # local env files
+.env
+.env.example
+.env.production
 web/.env
-web/src/.env.local
+web/.env.local
 web/.env.development.local
 web/.env.test.local
 web/.env.production.local
