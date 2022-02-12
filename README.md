@@ -23,6 +23,23 @@ I am a self-thaught developer learning web development. This app is just a trial
 * [Redis](https://redis.io/)
 * [Chakra UI](https://chakra-ui.com/)
 
+**Create Bank Screen**
+<img width="1439" alt="Screen Shot 2022-02-12 at 21 53 07" src="https://user-images.githubusercontent.com/37421564/153728035-6f2ce385-b8a5-409f-ae03-10b18799e31b.png">
+
+**All Banks Screen**
+<img width="1439" alt="Screen Shot 2022-02-12 at 21 53 22" src="https://user-images.githubusercontent.com/37421564/153728076-76361288-f840-44eb-ba3a-72af6dcc904f.png">
+
+**Create Report Screen**
+<img width="1439" alt="Screen Shot 2022-02-12 at 21 53 14" src="https://user-images.githubusercontent.com/37421564/153728122-2904504d-4cf4-4c00-8897-2ad23a435288.png">
+
+**Edit Report Screen**
+<img width="1439" alt="Screen Shot 2022-02-12 at 21 53 01" src="https://user-images.githubusercontent.com/37421564/153728138-86718664-72d1-402f-a925-a082c45ea2d3.png">
+
+**All Reports Screen**
+<img width="1439" alt="Screen Shot 2022-02-12 at 21 52 42" src="https://user-images.githubusercontent.com/37421564/153728147-d83ecb8e-9444-4735-ba2c-e8c8d964955b.png">
+
+
+
 ## Upcoming improvements & bug fixes
 - Write tests
 
